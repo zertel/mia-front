@@ -1,5 +1,4 @@
-# mia-front
-Monster ID Attack - Front
+# Monster ID Attack - Front
 
 # Repository Hakkında
 Bu repository, projenin kendisine ait api sunucusu ile iletişim kurarak çalışıyor.
