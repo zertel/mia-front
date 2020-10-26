@@ -1,4 +1,5 @@
 # Monster ID Attack - Front
+https://github.com/users/zertel/projects/2
 
 # Repository Hakkında
 Bu repository, projenin kendisine ait api sunucusu ile iletişim kurarak çalışıyor.
