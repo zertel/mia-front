@@ -28,6 +28,32 @@ function sayfaYukle(sayfaAdi){
 }
 
 
+var parcalar=[];
+function parcaYukle(parcaAdi,hedefAdresi,data){
+	if(parcalar[parcaAdi]){
+		document.querySelector(hedefAdresi).innerHTML += parcalar[parcaAdi].replace(/{{monster_id}}/g,data);
+		cl(parcaAdi + ' isimli parça sadece yerleştirildi');
+	}
+	else{
+		ajaxGet('parca/'+parcaAdi+'/'+parcaAdi+'.html', function(donenCevap){ 
+			parcalar[parcaAdi]=donenCevap;
+			document.querySelector(hedefAdresi).innerHTML += parcalar[parcaAdi].replace(/{{monster_id}}/g,data);
+			cl(parcaAdi + ' isimli parça yüklendi ve yerleştirildi');
+		});
+	}
+}
+
+
+/*/
+function parcaYerlestir(parcaAdi,hedefAdresi){
+	if(parcalar[parcaAdi]){
+		document.querySelector(hedefAdresi).innerHTML = parcalar[parcaAdi];
+	}
+}
+/*/
+
+
 window.onload = function(){
-	sayfaYukle('acik-dunya');
+	//sayfaYukle('acik-dunya');
+	sayfaYukle('canavarlarim');
 };
