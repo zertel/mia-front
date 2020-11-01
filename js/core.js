@@ -86,26 +86,27 @@ function sayfaYukle(sayfaAdi){
 var parcalar=[];
 function parcaYukle(parcaAdi,hedefAdresi,data){
 	if(parcalar[parcaAdi]){
-		document.querySelector(hedefAdresi).innerHTML += parcalar[parcaAdi].replace(/{{monster_id}}/g,data);
-		//cl(parcaAdi + ' isimli parça sadece yerleştirildi');
+		parcaYerlestir(parcaAdi,hedefAdresi,data);
 	}
 	else{
 		ajaxGet('parca/'+parcaAdi+'/'+parcaAdi+'.html', function(donenCevap){ 
 			parcalar[parcaAdi]=donenCevap;
-			document.querySelector(hedefAdresi).innerHTML += parcalar[parcaAdi].replace(/{{monster_id}}/g,data);
+			parcaYerlestir(parcaAdi,hedefAdresi,data);
 			//cl(parcaAdi + ' isimli parça yüklendi ve yerleştirildi');
 		});
 	}
 }
-
-
-/*/
-function parcaYerlestir(parcaAdi,hedefAdresi){
+function parcaYerlestir(parcaAdi,hedefAdresi,data){
 	if(parcalar[parcaAdi]){
-		document.querySelector(hedefAdresi).innerHTML = parcalar[parcaAdi];
+		var parcaIcerigi=parcalar[parcaAdi];
+		for(key in data){
+			parcaIcerigi = parcaIcerigi.replace(new RegExp('{{'+key+'}}', "g"),data[key]);
+		}
+		document.querySelector(hedefAdresi).innerHTML += parcaIcerigi;
+		cl(parcaAdi + ' isimli parça yerleştirildi');
 	}
 }
-/*/
+
 
 
 window.onload = function(){
