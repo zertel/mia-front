@@ -1,3 +1,9 @@
+// Çekirdek değişken tanımlamalarımız
+if(!mia)var mia={};
+if(!mia.loadedScripts)mia.loadedScripts=[];
+if(!mia.loadedStyles)mia.loadedStyles=[];
+			
+
 // Ufak Yardımcı Fonksiyonlar
 function cl(a){ console.log(a); } // console.log kısaltması
 
@@ -20,10 +26,59 @@ function ajaxGet(url,callback){
 
 
 
+// Ajax get yardımı ile seçili sayfayı yükler ve ekrandaki main etiketinin içine basar
 function sayfaYukle(sayfaAdi){
 	ajaxGet('sayfa/'+sayfaAdi+'/'+sayfaAdi+'.html', function(donenCevap){ 
+		// Ajax sonucu dönen cevabı main etiketinin içine yapıştır
 		document.querySelector('main').innerHTML = donenCevap;
 		cl(sayfaAdi + ' isimli sayfa yüklendi');
+		
+		// Yüklemesi tamamalanmış sayfanın javascript dosyasını da yükle (eğer aksi belirtilmemiş ise)
+		if(donenCevap.indexOf('<!-- JAVASCRIPT YOK -->')==-1){
+			// js dosyasının adresini hazırla
+			var scriptAdress='sayfa/'+sayfaAdi+'/'+sayfaAdi+'.js';
+
+			// aynı adrese sahip bir dosya yüklenmemiş ise yükleme için devam et
+			if(mia.loadedScripts.includes(scriptAdress)==false){
+				var script = document.createElement('script');
+				script.src = scriptAdress;
+				document.head.appendChild(script);
+
+				// yüklemesi tamamlanmış js dosyasını yüklenmişler dizisine dahil et
+				mia.loadedScripts.push(scriptAdress);
+
+				// script tamamen yüklendikten sonra çalışması gereken fonksiyonu otomatik olarak tetikle
+				script.onload = function(){
+					if(mia[sayfaAdi+'OnLoad']){
+						mia[sayfaAdi+'OnLoad']();
+					}
+				}
+			}
+			// seçili dosya daha önceden yüklenmiş ise içerisindeki tetik fonksiyonu çalıştır (bu tekrar yüklenmiş hissiyatı veriyor)
+			else{
+				if(mia[sayfaAdi+'OnLoad']){
+					mia[sayfaAdi+'OnLoad']();
+				}
+			}
+
+		}
+		
+		// Yüklemesi tamamalanmış sayfanın style(css) dosyasını da yükle (eğer aksi belirtilmemiş ise)
+		if(donenCevap.indexOf('<!-- CSS YOK -->')==-1){
+			// css dosyasının adresini hazırla
+			var styleAdress='sayfa/'+sayfaAdi+'/'+sayfaAdi+'.css';
+			// aynı adrese sahip bir dosya yüklenmemiş ise yükleme için devam et
+			if(mia.loadedStyles.includes(styleAdress)==false){
+				var link = document.createElement('link');
+				link.href = styleAdress;
+				link.rel = 'stylesheet';
+				document.head.appendChild(link);
+
+				// yüklemesi tamamlanmış css dosyasını yüklenmişler dizisine dahil et
+				mia.loadedStyles.push(styleAdress);
+			}
+		}
+		
 	});
 }
 
@@ -32,13 +87,13 @@ var parcalar=[];
 function parcaYukle(parcaAdi,hedefAdresi,data){
 	if(parcalar[parcaAdi]){
 		document.querySelector(hedefAdresi).innerHTML += parcalar[parcaAdi].replace(/{{monster_id}}/g,data);
-		cl(parcaAdi + ' isimli parça sadece yerleştirildi');
+		//cl(parcaAdi + ' isimli parça sadece yerleştirildi');
 	}
 	else{
 		ajaxGet('parca/'+parcaAdi+'/'+parcaAdi+'.html', function(donenCevap){ 
 			parcalar[parcaAdi]=donenCevap;
 			document.querySelector(hedefAdresi).innerHTML += parcalar[parcaAdi].replace(/{{monster_id}}/g,data);
-			cl(parcaAdi + ' isimli parça yüklendi ve yerleştirildi');
+			//cl(parcaAdi + ' isimli parça yüklendi ve yerleştirildi');
 		});
 	}
 }
@@ -54,6 +109,6 @@ function parcaYerlestir(parcaAdi,hedefAdresi){
 
 
 window.onload = function(){
-	//sayfaYukle('acik-dunya');
+	//sayfaYukle('acikDunya');
 	sayfaYukle('canavarlarim');
 };
