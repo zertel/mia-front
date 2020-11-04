@@ -110,6 +110,6 @@ function parcaYerlestir(parcaAdi,hedefAdresi,data){
 
 
 window.onload = function(){
-	//sayfaYukle('acikDunya');
-	sayfaYukle('canavarlarim');
+	sayfaYukle('acikDunya');
+	//sayfaYukle('canavarlarim');
 };
