@@ -49,8 +49,8 @@ function sayfaYukle(sayfaAdi){
 
 				// script tamamen yüklendikten sonra çalışması gereken fonksiyonu otomatik olarak tetikle
 				script.onload = function(){
-					if(mia[sayfaAdi+'OnLoad']){
-						mia[sayfaAdi+'OnLoad']();
+					if(mia[sayfaAdi]['yuklendiginde']){
+						mia[sayfaAdi]['yuklendiginde']();
 					}
 				}
 			}
