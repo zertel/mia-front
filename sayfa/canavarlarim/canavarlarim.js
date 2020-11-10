@@ -1,4 +1,7 @@
-mia.canavarlarimOnLoad = function(){
+mia.canavarlarim={};
+
+// canavarlarim page onload function
+mia.canavarlarim.yuklendiginde = function(){
 
 	// api üzerinden canavarlarım verilerini getir
 	ajaxGet('http://localhost/mia-api/canavarlarim/',function(donenCevap){
