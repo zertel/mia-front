@@ -4,6 +4,22 @@ mia.acikDunya={};
 mia.acikDunya.yuklendiginde = function(){
 	cl("acikDunya.yuklendiginde() fonksiyonu çalıştı");
 
+	// api üzerinden oyuncu konumlarını getiren fonksiyonu sürekli çağıran fonksiyonu çağır
+	mia.acikDunya.konumlariSurekliYenile();
+
+	document.querySelector('#acik-dunya-sahne').addEventListener("click", function(e){
+		var x,y;
+		x = e.offsetX;
+		y = e.offsetY;
+		cl('x',x,'y',y);
+		mia.acikDunya.canavarGezginSimgeYeniKonum(102,x,y);
+	});
+
+}
+
+
+// api üzerinden oyuncu konumlarını getiren fonksiyon
+mia.acikDunya.canavarGezginSimgeKonumlariGetir = function(){
 	// api üzerinden oyuncu konumlarını getir
 	ajaxGet('http://localhost/mia-api/oyuncu-konumlari/',function(donenCevap){
 
@@ -21,8 +37,8 @@ mia.acikDunya.yuklendiginde = function(){
 		}
 		
 	});
+};
 
-}
 
 
 mia.acikDunya.canavarGezginSimgeKonumlariGuncelle = function(){
@@ -39,16 +55,22 @@ mia.acikDunya.canavarGezginSimgeKonumlariGuncelle = function(){
 	}
 };
 
+
+
 mia.acikDunya.canavarGezginSimgeYeniKonum = function(canavar_id,x,y){
 	mia.acikDunya.oyuncuKonumlari[canavar_id].x=x;
 	mia.acikDunya.oyuncuKonumlari[canavar_id].y=y;
 	mia.acikDunya.canavarGezginSimgeKonumlariGuncelle();
 }
 
-document.querySelector('#acik-dunya-sahne').addEventListener("click", function(e){
-	var x,y;
-	x = e.offsetX;
-	y = e.offsetY;
-	cl('x',x,'y',y);
-	mia.acikDunya.canavarGezginSimgeYeniKonum(102,x,y);
-});
+
+
+mia.acikDunya.konumlariSurekliYenile = function(){
+
+	if(mia.aktifSayfa == 'acikDunya'){
+		// api üzerinden oyuncu konumlarını getiren fonksiyonu çağır
+		mia.acikDunya.canavarGezginSimgeKonumlariGetir();
+
+		setTimeout(mia.acikDunya.konumlariSurekliYenile, 1000);
+	}
+}

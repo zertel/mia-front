@@ -31,6 +31,7 @@ function sayfaYukle(sayfaAdi){
 	ajaxGet('sayfa/'+sayfaAdi+'/'+sayfaAdi+'.html', function(donenCevap){ 
 		// Ajax sonucu dönen cevabı main etiketinin içine yapıştır
 		document.querySelector('main').innerHTML = donenCevap;
+		mia.aktifSayfa = sayfaAdi;
 		cl(sayfaAdi + ' isimli sayfa yüklendi');
 		
 		// Yüklemesi tamamalanmış sayfanın javascript dosyasını da yükle (eğer aksi belirtilmemiş ise)
@@ -56,8 +57,8 @@ function sayfaYukle(sayfaAdi){
 			}
 			// seçili dosya daha önceden yüklenmiş ise içerisindeki tetik fonksiyonu çalıştır (bu tekrar yüklenmiş hissiyatı veriyor)
 			else{
-				if(mia[sayfaAdi+'OnLoad']){
-					mia[sayfaAdi+'OnLoad']();
+				if(mia[sayfaAdi]['yuklendiginde']){
+					mia[sayfaAdi]['yuklendiginde']();
 				}
 			}
 
