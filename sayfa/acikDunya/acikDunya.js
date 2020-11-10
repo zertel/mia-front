@@ -44,3 +44,11 @@ mia.acikDunya.canavarGezginSimgeYeniKonum = function(canavar_id,x,y){
 	mia.acikDunya.oyuncuKonumlari[canavar_id].y=y;
 	mia.acikDunya.canavarGezginSimgeKonumlariGuncelle();
 }
+
+document.querySelector('#acik-dunya-sahne').addEventListener("click", function(e){
+	var x,y;
+	x = e.offsetX;
+	y = e.offsetY;
+	cl('x',x,'y',y);
+	mia.acikDunya.canavarGezginSimgeYeniKonum(102,x,y);
+});

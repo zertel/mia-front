@@ -5,7 +5,7 @@ if(!mia.loadedStyles)mia.loadedStyles=[];
 			
 
 // Ufak Yardımcı Fonksiyonlar
-function cl(a){ console.log(a); } // console.log kısaltması
+var cl = console.log;
 
 
 cl("core.js yüklendi");
