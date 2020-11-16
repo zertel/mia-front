@@ -1,3 +1,4 @@
+/* GENEL */
 body{
 	margin:0;
 	padding:0;
@@ -5,3 +6,15 @@ body{
 	background-color: #eee;
 	font-family: verdana;
 }
+
+
+/* lib.js içerisindeki kodları destekleyen style(css) kodları */
+.slider{
+
+}
+.slider .slide{
+	display: none;
+	opacity: 0;
+	transition: opacity 2s;
+}
+/* *** */
