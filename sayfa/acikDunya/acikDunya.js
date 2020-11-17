@@ -50,7 +50,7 @@ mia.acikDunya.canavarGezginSimgeKonumlariGuncelle = function(){
 			canavarGezginSimge.style.top=mia.acikDunya.oyuncuKonumlari[canavar_id].y+"px";
 		}
 		else{
-			parcaYukle('canavarGezginSimge', '#acik-dunya-sahne', mia.acikDunya.oyuncuKonumlari[canavar_id] );
+			mia.parcaYukle('canavarGezginSimge', '#acik-dunya-sahne', mia.acikDunya.oyuncuKonumlari[canavar_id] );
 		}
 	}
 };
