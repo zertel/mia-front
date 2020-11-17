@@ -14,7 +14,7 @@ mia.canavarlarim.yuklendiginde = function(){
 
 			// objeye dönüşmüş veriyi döngü ve parcaYukle fonksiyonu yardımı ile ekrana bas
 			for(i=0; i<canavarlarim.length; i++){
-				parcaYukle('canavar-kart','#canavarlarim', canavarlarim[i] );
+				mia.parcaYukle('canavar-kart','#canavarlarim', canavarlarim[i] );
 			}
 		}
 		

@@ -3,7 +3,9 @@ mia.intro={};
 // intro page onload function
 mia.intro.yuklendiginde = function(){
 
-	mia.slider.tanimla('#intro.slider');
+	mia.slaytYoneticisi.tanimla('#intro.slayt-yoneticisi', function(){ 
+		mia.sayfaYukle('uyelikGirisi');
+	});
 	/*/
 	// api üzerinden canavarlarım verilerini getir
 	ajaxGet('http://localhost/mia-api/intro/',function(donenCevap){
@@ -16,7 +18,7 @@ mia.intro.yuklendiginde = function(){
 
 			// objeye dönüşmüş veriyi döngü ve parcaYukle fonksiyonu yardımı ile ekrana bas
 			for(i=0; i<intro.length; i++){
-				parcaYukle('canavar-kart','#intro', intro[i] );
+				mia.parcaYukle('canavar-kart','#intro', intro[i] );
 			}
 		}
 		

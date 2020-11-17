@@ -1,7 +1,6 @@
 // Çekirdek değişken tanımlamalarımız
 if(!mia)var mia={};
-if(!mia.loadedScripts)mia.loadedScripts=[];
-if(!mia.loadedStyles)mia.loadedStyles=[];
+mia.yukluSayfalar={};
 			
 
 // Ufak Yardımcı Fonksiyonlar
@@ -27,11 +26,13 @@ function ajaxGet(url,callback){
 
 
 // Ajax get yardımı ile seçili sayfayı yükler ve ekrandaki main etiketinin içine basar
-function sayfaYukle(sayfaAdi){
+mia.sayfaYukle = function(sayfaAdi){
 	ajaxGet('sayfa/'+sayfaAdi+'/'+sayfaAdi+'.html', function(donenCevap){ 
 		// Ajax sonucu dönen cevabı main etiketinin içine yapıştır
 		document.querySelector('main').innerHTML = donenCevap;
 		mia.aktifSayfa = sayfaAdi;
+		mia.yukluSayfalar[sayfaAdi]={};
+		
 		cl(sayfaAdi + ' isimli sayfa yüklendi');
 		
 		// Yüklemesi tamamalanmış sayfanın javascript dosyasını da yükle (eğer aksi belirtilmemiş ise)
@@ -40,13 +41,13 @@ function sayfaYukle(sayfaAdi){
 			var scriptAdress='sayfa/'+sayfaAdi+'/'+sayfaAdi+'.js';
 
 			// aynı adrese sahip bir dosya yüklenmemiş ise yükleme için devam et
-			if(mia.loadedScripts.includes(scriptAdress)==false){
+			if(!mia.yukluSayfalar[sayfaAdi].script){
 				var script = document.createElement('script');
 				script.src = scriptAdress;
 				document.head.appendChild(script);
 
 				// yüklemesi tamamlanmış js dosyasını yüklenmişler dizisine dahil et
-				mia.loadedScripts.push(scriptAdress);
+				mia.yukluSayfalar[sayfaAdi].script=scriptAdress;
 
 				// script tamamen yüklendikten sonra çalışması gereken fonksiyonu otomatik olarak tetikle
 				script.onload = function(){
@@ -69,14 +70,14 @@ function sayfaYukle(sayfaAdi){
 			// css dosyasının adresini hazırla
 			var styleAdress='sayfa/'+sayfaAdi+'/'+sayfaAdi+'.css';
 			// aynı adrese sahip bir dosya yüklenmemiş ise yükleme için devam et
-			if(mia.loadedStyles.includes(styleAdress)==false){
+			if(!mia.yukluSayfalar[sayfaAdi].style){
 				var link = document.createElement('link');
 				link.href = styleAdress;
 				link.rel = 'stylesheet';
 				document.head.appendChild(link);
 
 				// yüklemesi tamamlanmış css dosyasını yüklenmişler dizisine dahil et
-				mia.loadedStyles.push(styleAdress);
+				mia.yukluSayfalar[sayfaAdi].style=styleAdress;
 			}
 		}
 		
@@ -84,22 +85,22 @@ function sayfaYukle(sayfaAdi){
 }
 
 
-var parcalar=[];
-function parcaYukle(parcaAdi,hedefAdresi,data){
-	if(parcalar[parcaAdi]){
-		parcaYerlestir(parcaAdi,hedefAdresi,data);
+mia.yukluParcalar=[];
+mia.parcaYukle = function(parcaAdi,hedefAdresi,data){
+	if(mia.yukluParcalar[parcaAdi]){
+		mia.parcaYerlestir(parcaAdi,hedefAdresi,data);
 	}
 	else{
 		ajaxGet('parca/'+parcaAdi+'/'+parcaAdi+'.html', function(donenCevap){ 
-			parcalar[parcaAdi]=donenCevap;
-			parcaYerlestir(parcaAdi,hedefAdresi,data);
+			mia.yukluParcalar[parcaAdi]=donenCevap;
+			mia.parcaYerlestir(parcaAdi,hedefAdresi,data);
 			//cl(parcaAdi + ' isimli parça yüklendi ve yerleştirildi');
 		});
 	}
 }
-function parcaYerlestir(parcaAdi,hedefAdresi,data){
-	if(parcalar[parcaAdi]){
-		var parcaIcerigi=parcalar[parcaAdi];
+mia.parcaYerlestir = function(parcaAdi,hedefAdresi,data){
+	if(mia.yukluParcalar[parcaAdi]){
+		var parcaIcerigi=mia.yukluParcalar[parcaAdi];
 		for(key in data){
 			parcaIcerigi = parcaIcerigi.replace(new RegExp('{{'+key+'}}', "g"),data[key]);
 		}
@@ -111,7 +112,7 @@ function parcaYerlestir(parcaAdi,hedefAdresi,data){
 
 
 window.onload = function(){
-	//sayfaYukle('acikDunya');
-	//sayfaYukle('canavarlarim');
-	sayfaYukle('intro');
+	//mia.sayfaYukle('acikDunya');
+	//mia.sayfaYukle('canavarlarim');
+	mia.sayfaYukle('intro');
 };
