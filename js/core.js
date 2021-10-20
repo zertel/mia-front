@@ -109,10 +109,3 @@ mia.parcaYerlestir = function(parcaAdi,hedefAdresi,data){
 	}
 }
 
-
-
-window.onload = function(){
-	//mia.sayfaYukle('acikDunya');
-	//mia.sayfaYukle('canavarlarim');
-	mia.sayfaYukle('intro');
-};

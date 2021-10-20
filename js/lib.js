@@ -107,3 +107,37 @@ mia.slaytYoneticisi = {
 	}
 
 }
+
+
+
+
+
+
+// Ses yöneticisi
+mia.yukluSesler = {};
+mia.sesYoneticisi = {
+
+	yukle: function(id,dosyaAdresi){
+		mia.yukluSesler[id] = new Audio(dosyaAdresi);
+	},
+
+	oynat: function(id){
+		if(mia.yukluSesler[id]){
+			mia.yukluSesler[id].play();
+		}
+	},
+
+	duraklat: function(id){
+		if(mia.yukluSesler[id]){
+			mia.yukluSesler[id].pause();
+		}
+	},
+
+	durdur: function(id){
+		if(mia.yukluSesler[id]){
+			mia.yukluSesler[id].pause();
+			mia.yukluSesler[id].currentTime = 0;
+		}
+	}
+
+};

@@ -3,9 +3,14 @@ mia.intro={};
 // intro page onload function
 mia.intro.yuklendiginde = function(){
 
+	mia.sesYoneticisi.yukle('intro','sayfa/intro/mp3/intro.mp3');
+	mia.sesYoneticisi.oynat('intro');
+	
 	mia.slaytYoneticisi.tanimla('#intro.slayt-yoneticisi', function(){ 
-		mia.sayfaYukle('uyelikGirisi');
+		mia.sesYoneticisi.durdur('intro');
+		mia.sayfaYukle('anasayfa');
 	});
+
 	/*/
 	// api üzerinden canavarlarım verilerini getir
 	ajaxGet('http://localhost/mia-api/intro/',function(donenCevap){
