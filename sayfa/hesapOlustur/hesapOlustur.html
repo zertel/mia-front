@@ -1,0 +1,32 @@
+<div id="hesap-olustur-sahne">
+	<div class="container">
+		
+		<div class="ust-panel">
+			<div class="hesap-olustur-baslik">Monster ID Attack</div>
+			<h3>Yeni Hesap</h3>
+		</div>
+		
+		<div class="orta-panel">
+			<form id="hesap-olustur-form" method="POST">
+				<div>
+					<input type="text" name="kullaniciAdi" autocomplete="off" placeholder="Kullanıcı adınız" class="hesap-olustur-input">
+				</div>
+				<div>
+					<input type="text" name="eposta" autocomplete="off" placeholder="E-Posta adresiniz" class="hesap-olustur-input">
+				</div>
+				<div>
+					<input type="password" name="sifre" autocomplete="new-password" placeholder="Şifreniz" class="hesap-olustur-input">
+				</div>
+				<div>
+					<input type="password" name="sifreTekrari" placeholder="Şifre tekrarı" class="hesap-olustur-input">
+				</div>
+				<button type="submit" class="hesap-olustur-btn">Hesabı Oluştur</button>
+			</form>
+		</div>
+
+		<div class="alt-panel">
+			<button onclick="mia.sayfaYukle('anasayfa')" class="hesap-olustur-btn">Vazgeç</button>		
+		</div>
+
+	</div>
+</div>

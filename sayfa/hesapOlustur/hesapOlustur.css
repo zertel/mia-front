@@ -1,0 +1,78 @@
+#hesap-olustur-sahne > .container{
+	text-align: center;
+	background-image: url(img/bg.jpg);
+	background-size: cover;
+
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+
+#hesap-olustur-sahne .ust-panel{
+	padding-top: 4em;
+}
+
+#hesap-olustur-sahne .ust-panel .hesap-olustur-baslik{
+	color: white;
+	font-size: 50pt;
+	font-family: arial;
+	text-shadow: 3px 3px #000;
+}
+
+
+
+#hesap-olustur-sahne .orta-panel{
+	margin: 0;
+	position: absolute;
+	top: 25%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	left: 50%;
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+#hesap-olustur-form input{
+	transition: background-color 1s;
+	background-color: rgba(0,0,0,0.5);
+	color: #ccc;
+	font-size: 20pt;
+	padding: 0.4em;
+	margin: 0.2em;
+	border-radius: 3px;
+	border:1px solid #666;
+}
+#hesap-olustur-form input:focus{
+	color: #fff;
+	background-color: rgba(50,50,50,0.5);
+}
+
+
+
+
+#hesap-olustur-sahne .alt-panel{
+	background-color: rgba(0,0,0,0.5);
+	color: white;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left:0;
+	padding: 2em 2em 4em 2em;
+}
+
+#hesap-olustur-sahne .hesap-olustur-btn{
+	background-color: rgba(0,0,0,0.5);
+	color: #ccc;
+	font-size: 20pt;
+	padding: 0.4em;
+	margin: 0.2em;
+	border-radius: 3px;
+	border:1px solid #666;
+}
+#hesap-olustur-sahne .hesap-olustur-btn:hover{
+	color: #fff;
+	background-color: rgba(50,50,50,0.5);
+}
