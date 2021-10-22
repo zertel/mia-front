@@ -8,3 +8,20 @@ mia.hesapOlustur.yuklendiginde = function(){
 
 }
 
+
+mia.hesapOlustur.kaydet = function(){
+	return ajaxPostGonder('hesap-olustur-form', function(donenCevap){
+		if(donenCevap){
+			var donenCevapJson=JSON.parse(donenCevap);
+
+			if(donenCevapJson.sonuc == 1){
+				mia.sayfaYukle('acikDunya'); 
+			}
+			else{
+				alert('Üyelik kaydı gerçekleştirilemedi, lütfen tüm alanları kontrol ediniz.');
+			}
+		}
+	});
+}
+
+

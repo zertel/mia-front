@@ -7,9 +7,10 @@
 		</div>
 		
 		<div class="orta-panel">
-			<form id="uyelik-girisi-form" method="POST">
+			<form action="http://localhost:83/hesap/giris" id="uyelik-girisi-form" method="POST" 
+				onsubmit="return mia.uyelikGirisi.gonder()">
 				<div>
-					<input type="text" name="kullaniciAdi" autocomplete="off" placeholder="Kullanıcı adınız ya da e-posta adresiniz" class="uyelik-girisi-input">
+					<input type="text" name="eposta" autocomplete="off" placeholder="Kullanıcı adınız ya da e-posta adresiniz" class="uyelik-girisi-input">
 				</div>
 				<div>
 					<input type="password" name="sifre" placeholder="Şifreniz" class="uyelik-girisi-input">

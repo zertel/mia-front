@@ -23,6 +23,33 @@ function ajaxGet(url,callback){
 }
 
 
+// AJAX POST (html formu oku ajax olarak gönder)
+
+// KULLANIMI
+// ajaxPostGonder( 'iof-'+id, function(sonuc){
+// 			alert('bitti'+sonuc);
+// });
+function ajaxPostGonder(formId,CB){
+	var http = new XMLHttpRequest();
+	var form = document.getElementById(formId);
+	var formData=new FormData(form);
+	http.open("POST",form.getAttribute('action'),true);
+
+	//http.setRequestHeader('Content-type',"application/x-www-form-urlencoded");
+
+	http.onreadystatechange = function () {
+		if(http.readyState == 4 && http.status == 200 ){
+			CB(http.responseText);
+		}
+	} 
+	http.send(formData);
+
+	return false;
+}
+
+
+
+
 
 
 // Ajax get yardımı ile seçili sayfayı yükler ve ekrandaki main etiketinin içine basar
