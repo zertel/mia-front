@@ -1,8 +1,99 @@
-#acik-dunya-sahne{
-	width: 800px;
-	height: 800px;
-	margin: auto;
-	background-color: white;
+#acik-dunya-sahne > .container{
+	text-align: center;
+	background-image: url(img/bg.jpg);
+	background-size: cover;
 
-	position: relative;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
+
+
+#acik-dunya-sahne .ust-panel{
+	padding-top: 4em;
+}
+
+#acik-dunya-sahne .ust-panel .acik-dunya-baslik{
+	color: white;
+	font-size: 50pt;
+	font-family: arial;
+	text-shadow: 3px 3px #000;
+}
+
+
+
+#acik-dunya-sahne .orta-panel{
+	margin: 0;
+	position: absolute;
+	top: 25%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	left: 50%;
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+#acik-dunya-form input{
+	transition: background-color 1s;
+	background-color: rgba(0,0,0,0.5);
+	color: #ccc;
+	font-size: 20pt;
+	padding: 0.4em;
+	margin: 0.2em;
+	border-radius: 3px;
+	border:1px solid #666;
+}
+#acik-dunya-form input:focus{
+	color: #fff;
+	background-color: rgba(50,50,50,0.5);
+}
+
+
+
+
+#acik-dunya-sahne .alt-panel{
+	/* background-color: rgba(0,0,0,0.5); */
+	color: white;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left:0;
+	padding: 2em 2em 4em 2em;
+}
+
+#acik-dunya-sahne .acik-dunya-butonlar{
+	text-align: right;
+	padding-right: 3em;
+}
+
+#acik-dunya-sahne .acik-dunya-btn{
+	display: inline-block;
+	vertical-align: top;
+	background-color: #f1f2f6;
+	color: #ccc;
+	width: 100px;
+	height: 100px;
+	border-radius: 40px;	
+	margin: 0em;
+	border:1px solid #666;
+}
+#acik-dunya-sahne .acik-dunya-btn:hover{
+	color: #fff;
+	background-color: #fff;
+}
+
+#acik-dunya-sahne .btn-anasayfa:hover svg{
+	fill:#B33771;
+}
+
+#acik-dunya-sahne .btn-canavarlarim{
+	background-image: url(../../../monster/2.png);
+	background-size: cover;
+}
+
+#acik-dunya-sahne .btn-canavarlarim:hover{
+	opacity: 0.8;
+}
+

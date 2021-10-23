@@ -5,7 +5,7 @@ mia.acikDunya.yuklendiginde = function(){
 	cl("acikDunya.yuklendiginde() fonksiyonu çalıştı");
 
 	// api üzerinden oyuncu konumlarını getiren fonksiyonu sürekli çağıran fonksiyonu çağır
-	mia.acikDunya.konumlariSurekliYenile();
+	//mia.acikDunya.konumlariSurekliYenile();
 
 	document.querySelector('#acik-dunya-sahne').addEventListener("click", function(e){
 		var x,y;
