@@ -6,7 +6,7 @@ mia.acikDunya.yuklendiginde = function(){
 
 	// api üzerinden oyuncu konumlarını getiren fonksiyonu sürekli çağıran fonksiyonu çağır
 	//mia.acikDunya.konumlariSurekliYenile();
-
+	/*/
 	document.querySelector('#acik-dunya-sahne').addEventListener("click", function(e){
 		var x,y;
 		x = e.offsetX;
@@ -14,6 +14,7 @@ mia.acikDunya.yuklendiginde = function(){
 		cl('x',x,'y',y);
 		mia.acikDunya.canavarGezginSimgeYeniKonum(102,x,y);
 	});
+	/*/
 
 }
 

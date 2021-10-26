@@ -1,7 +1,11 @@
 // Çekirdek değişken tanımlamalarımız
 if(!mia)var mia={};
 mia.yukluSayfalar={};
-			
+
+//Çekirdek ayarlar
+mia.global={
+	apiHost: 'http://localhost:83'
+};
 
 // Ufak Yardımcı Fonksiyonlar
 var cl = console.log;
@@ -135,4 +139,57 @@ mia.parcaYerlestir = function(parcaAdi,hedefAdresi,data){
 		cl(parcaAdi + ' isimli parça yerleştirildi');
 	}
 }
+
+
+mia.oturum = {
+	durum: 0,
+	hesap: {
+		//id: 1,
+		//kullaniciAdi: "zertel",
+		//eposta: "mail@zertel.net",
+		//ad: "Orhan",
+		//soyad: "TUTUM"
+	},
+
+	giris: function(oturumJson){
+		if(oturumJson.sonuc == 1){
+			localStorage.miaOturum=JSON.stringify({
+				durum: oturumJson.sonuc,
+				hesap: oturumJson.cevap
+			});
+			return 1;
+		}
+		return 0;
+	},
+
+	cikis: function(sayfaAdi){
+		if(!sayfaAdi){
+			sayfaAdi='anasayfa';
+		}
+		// api üzerinden üyelik çıkışı gerçekleştir ve localStorage'yi temizle
+		ajaxGet(mia.global.apiHost + '/hesap/cikis',function(donenCevap){
+			if(donenCevap){
+				var donenCevapJson = JSON.parse(donenCevap);
+				if(donenCevapJson.sonuc == 1){
+					delete localStorage.miaOturum;
+					mia.sayfaYukle(sayfaAdi);
+				}
+			}
+		});
+	},
+
+	localStorageMiaOturumKontrol: function(){
+		cl("localStorageMiaOturumKontrol() fonksiyonu çalıştı.");
+		if(localStorage.miaOturum){
+			var lsMiaOturum=JSON.parse(localStorage.miaOturum);
+			if(lsMiaOturum.durum==1){
+				mia.oturum.durum=lsMiaOturum.durum;
+				mia.oturum.hesap=lsMiaOturum.hesap;
+			}
+		}
+	}
+};
+
+
+
 

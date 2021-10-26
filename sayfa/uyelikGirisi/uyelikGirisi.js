@@ -12,9 +12,10 @@ mia.uyelikGirisi.yuklendiginde = function(){
 mia.uyelikGirisi.gonder = function(){
 	return ajaxPostGonder('uyelik-girisi-form', function(donenCevap){
 		if(donenCevap){
+			cl(donenCevap);
 			var donenCevapJson=JSON.parse(donenCevap);
 
-			if(donenCevapJson.sonuc == 1){
+			if(mia.oturum.giris(donenCevapJson)){
 				mia.sayfaYukle('acikDunya'); 
 			}
 			else{
