@@ -8,6 +8,8 @@ window.onload = function(){
 
 	//mia.sayfaYukle('uyelikGirisi');
 	//mia.sayfaYukle('hesapOlustur');
+	mia.sayfaYukle('canavarDetay');
+	return;
 	//mia.sayfaYukle('canavarlarim');
 	//mia.sayfaYukle('intro');
 
