@@ -1,9 +1,10 @@
 <div style="
+	position: relative;
 	width: 200px;
 	height: 200px;
 	margin: 0.5em;
 	background-color: white;
-	border-radius: 14px;
+	border-radius: 44px;
 	-webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.3);
 	-moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.3);
 	box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.3);
@@ -13,6 +14,45 @@
 	background-image: url('monster/{{id}}.png');
 	background-size: contain;
 	background-repeat: no-repeat;
+
+	box-sizing: border-box;
+	padding: 1em;
 	">
-	Monster {{id}}  CAN: {{can}} GÜÇ: {{guc}}
+	<span style="
+		position: absolute;
+		top:0;
+		left: 0;
+		bottom:0;
+		margin: 1em;
+		color: orange;
+		font-weight: bold;
+		font-family: arial;
+		font-size: 20px;
+		">
+		<span style="background-color: rgba(0,0,0,0.7); border-radius: 30px; padding: 3px 6px;">#{{id}}</span>
+	</span>
+	<span style="
+		position: absolute;
+		bottom:0;
+		left:0;
+		margin: 1em;
+		color: red;
+		font-weight: bold;
+		font-family: arial;
+		font-size: 20px;
+		">
+		<span style="background-color: rgba(0,0,0,0.7); border-radius: 30px; padding: 3px 6px;">♥: {{can}}</span>
+	</span>
+	<span style="
+		position: absolute;
+		right: 0;
+		bottom:0;
+		margin: 1em;
+		color: #4cf;
+		font-weight: bold;
+		font-family: arial;
+		font-size: 20px;
+		">
+		<span style="background-color: rgba(0,0,0,0.7); border-radius: 30px; padding: 3px 6px;">♣: {{guc}}</span>
+	</span>
 </div>
