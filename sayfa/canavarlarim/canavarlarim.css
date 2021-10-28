@@ -8,6 +8,8 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
+
+	overflow-y: auto;
 }
 
 
@@ -59,7 +61,6 @@
 	position: fixed;
 	right: 0;
 	bottom: 0;
-	left:0;
 	padding: 2em 2em 4em 2em;
 }
 
@@ -105,4 +106,12 @@
 	height:50px;
 	border-radius: 20px;
 	vertical-align: bottom;
+}
+
+#canavarlarim-sahne div.daha-fazla-btn{
+	background-color: white;
+	transition: background-color 0.4s;
+}
+#canavarlarim-sahne div.daha-fazla-btn:hover{
+	background-color: #ffd;
 }

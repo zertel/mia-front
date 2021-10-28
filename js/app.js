@@ -8,9 +8,9 @@ window.onload = function(){
 
 	//mia.sayfaYukle('uyelikGirisi');
 	//mia.sayfaYukle('hesapOlustur');
-	mia.sayfaYukle('canavarDetay');
-	return;
+	//mia.sayfaYukle('canavarDetay');
 	//mia.sayfaYukle('canavarlarim');
+	//return;
 	//mia.sayfaYukle('intro');
 
 	// Daha önce yapılmış üyelik girişi var mı, kontrol et ve dom'a yükle
