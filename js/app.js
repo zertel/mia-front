@@ -10,8 +10,8 @@ window.onload = function(){
 	//mia.sayfaYukle('hesapOlustur');
 	//mia.sayfaYukle('canavarDetay');
 	//mia.sayfaYukle('canavarlarim');
-	//return;
 	//mia.sayfaYukle('intro');
+	//return;
 
 	// Daha önce yapılmış üyelik girişi var mı, kontrol et ve dom'a yükle
 	mia.oturum.localStorageMiaOturumKontrol();

@@ -57,7 +57,10 @@ function ajaxPostGonder(formId,CB){
 
 
 // Ajax get yardımı ile seçili sayfayı yükler ve ekrandaki main etiketinin içine basar
-mia.sayfaYukle = function(sayfaAdi){
+mia.sayfaYukle = function(sayfaAdi,parametre){
+	if(parametre){
+		window.location.hash=parametre;
+	}
 	ajaxGet('sayfa/'+sayfaAdi+'/'+sayfaAdi+'.html', function(donenCevap){ 
 		// Ajax sonucu dönen cevabı main etiketinin içine yapıştır
 		document.querySelector('main').innerHTML = donenCevap;
