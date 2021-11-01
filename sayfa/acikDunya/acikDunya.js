@@ -6,15 +6,16 @@ mia.acikDunya.yuklendiginde = function(){
 
 	// api üzerinden oyuncu konumlarını getiren fonksiyonu sürekli çağıran fonksiyonu çağır
 	mia.acikDunya.konumlariSurekliYenile();
-	/*/
-	document.querySelector('#acik-dunya-sahne').addEventListener("click", function(e){
-		var x,y;
-		x = e.offsetX;
-		y = e.offsetY;
-		cl('x',x,'y',y);
-		mia.acikDunya.canavarGezginSimgeYeniKonum(102,x,y);
-	});
-	/*/
+
+	setTimeout(function(){
+		document.querySelector('#acik-dunya-sahne .container').addEventListener("click", function(e){
+			var x,y;
+			x = e.offsetX;
+			y = e.offsetY;
+			cl('x',x,'y',y);
+			mia.acikDunya.hedefeGit(x,y);
+		});
+	},500);
 
 
 }
@@ -47,8 +48,6 @@ mia.acikDunya.konumlariGetir = function(){
 		
 	});
 };
-
-
 
 mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 	// daha önceden tanımlanmış oyuncuKonumlari verisini döngü ve parcaYukle fonksiyonu yardımı ile ekrana bas
@@ -116,10 +115,25 @@ mia.acikDunya.dusmanGezginSimgeKonumlariGuncelle = function(){
 
 
 
-mia.acikDunya.canavarGezginSimgeYeniKonum = function(canavar_id,x,y){
-	mia.acikDunya.oyuncuKonumlari[canavar_id].x=x;
-	mia.acikDunya.oyuncuKonumlari[canavar_id].y=y;
-	mia.acikDunya.canavarGezginSimgeKonumlariGuncelle();
+mia.acikDunya.hedefeGit = function(x,y){
+
+	// api get isteği ile konumu değiştir
+	ajaxGet(mia.global.apiHost+'/sahne/hedefeGit/'+x+'/'+y, function(donenCevap){
+
+		if(donenCevap){
+			cl("hedefeGit apisi çalıştı: (URL "+mia.global.apiHost+'/sahne/hedefeGit/'+x+'/'+y+"')");
+
+			/*/
+			// text yığını olarak dönen json verisini parçala ve objeye dönüştür 
+			var donenCevapJson = JSON.parse(donenCevap);
+
+			if(donenCevapJson.sonuc == 1){
+
+			}
+			/*/
+		}
+		
+	});
 }
 
 
