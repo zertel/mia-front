@@ -8,15 +8,54 @@ mia.acikDunya.yuklendiginde = function(){
 	mia.acikDunya.konumlariSurekliYenile();
 
 	setTimeout(function(){
-		document.querySelector('#acik-dunya-sahne .container').addEventListener("click", function(e){
+		var sahne = document.querySelector('#acik-dunya-sahne .container');
+
+		cl("Sahne boyutu: x:", window.innerWidth, "y:", window.innerHeight);
+
+		sahne.addEventListener("click", function(e){
 			var x,y;
 			x = e.offsetX;
 			y = e.offsetY;
-			cl('x',x,'y',y);
 			mia.acikDunya.hedefeGit(x,y);
 		});
-	},500);
 
+		mia.acikDunya.scrollXStart=0;
+		mia.acikDunya.scrollX=0;
+		mia.acikDunya.scrollYStart=0;
+		mia.acikDunya.scrollY=0;
+		document.body.addEventListener("mousedown", function(e){
+			mia.acikDunya.scrollXStart = window.scrollX+e.clientX;
+			mia.acikDunya.scrollYStart = window.scrollY+e.clientY;
+			cl('down',e.clientY);
+		});
+		document.body.addEventListener("mousemove", function(e){
+			if(mia.acikDunya.scrollXStart>0 || mia.acikDunya.scrollYStart>0){
+				mia.acikDunya.scrollX = mia.acikDunya.scrollXStart - e.clientX;
+				mia.acikDunya.scrollY = mia.acikDunya.scrollYStart - e.clientY;
+				window.scrollTo(mia.acikDunya.scrollX,mia.acikDunya.scrollY);
+				cl('move');
+			}
+		});
+		document.body.addEventListener("mouseup", function(e){
+			mia.acikDunya.scrollXStart=0;
+			mia.acikDunya.scrollX=0;
+			mia.acikDunya.scrollYStart=0;
+			mia.acikDunya.scrollY=0;
+			cl('up');
+		});
+
+
+		if(window.innerWidth > window.innerHeight ){
+			sahne.style.width = window.innerWidth+"px";
+			sahne.style.height = window.innerWidth+"px";
+		}
+		else{
+			sahne.style.width = window.innerHeight+"px";
+			sahne.style.height = window.innerHeight+"px";
+		}
+		
+
+	},500);
 
 }
 
@@ -65,7 +104,7 @@ mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 				x:mia.acikDunya.oyuncuKonumlari[key][2],
 				y:mia.acikDunya.oyuncuKonumlari[key][3]
 			}
-			mia.parcaYukle('canavarGezginSimge', '#acik-dunya-sahne', konumObj);
+			mia.parcaYukle('canavarGezginSimge', '#acik-dunya-sahne .container', konumObj);
 		}
 	}
 };
@@ -86,7 +125,7 @@ mia.acikDunya.canavarGezginSimgeKonumlariGuncelle = function(){
 				x:mia.acikDunya.canavarKonumlari[key][1],
 				y:mia.acikDunya.canavarKonumlari[key][2]
 			}
-			mia.parcaYukle('canavarGezginSimge', '#acik-dunya-sahne', konumObj);
+			mia.parcaYukle('canavarGezginSimge', '#acik-dunya-sahne .container', konumObj);
 		}
 	}
 };
@@ -108,7 +147,7 @@ mia.acikDunya.dusmanGezginSimgeKonumlariGuncelle = function(){
 				x:mia.acikDunya.dusmanKonumlari[key][2],
 				y:mia.acikDunya.dusmanKonumlari[key][3]
 			}
-			mia.parcaYukle('dusmanGezginSimge', '#acik-dunya-sahne', konumObj);
+			mia.parcaYukle('dusmanGezginSimge', '#acik-dunya-sahne .container', konumObj);
 		}
 	}
 };
@@ -144,6 +183,6 @@ mia.acikDunya.konumlariSurekliYenile = function(){
 		// api üzerinden oyuncu konumlarını getiren fonksiyonu çağır
 		mia.acikDunya.konumlariGetir();
 
-		setTimeout(mia.acikDunya.konumlariSurekliYenile, 1000);
+		setTimeout(mia.acikDunya.konumlariSurekliYenile, 5000);
 	}
 }
