@@ -120,12 +120,16 @@ mia.sayfaYukle = function(sayfaAdi,parametre){
 
 
 mia.yukluParcalar=[];
-mia.parcaYukle = function(parcaAdi,hedefAdresi,data){
+mia.parcaYukle = function(parcaAdi,hedefAdresi,data,CB){
 	if(mia.yukluParcalar[parcaAdi]){
+		if(CB)CB();
+
 		mia.parcaYerlestir(parcaAdi,hedefAdresi,data);
 	}
 	else{
 		ajaxGet('parca/'+parcaAdi+'/'+parcaAdi+'.html', function(donenCevap){ 
+			if(CB)CB();
+
 			mia.yukluParcalar[parcaAdi]=donenCevap;
 			mia.parcaYerlestir(parcaAdi,hedefAdresi,data);
 			//cl(parcaAdi + ' isimli parça yüklendi ve yerleştirildi');
@@ -196,3 +200,55 @@ mia.oturum = {
 
 
 
+mia.pencere = {
+	ac: function(pencereId,ayarlar){
+
+		if(!ayarlar)ayarlar={};
+		if(!ayarlar.width)ayarlar.width="400px";
+		if(!ayarlar.height)ayarlar.height="200px";
+		if(!ayarlar.icerik)ayarlar.icerik="";
+
+
+		// Eğer yok ise pencereyi oluştur (create html elements)
+		if(!document.getElementById('pencere-'+pencereId)){
+			document.body.insertAdjacentHTML("beforeend", '\
+				<div class="pencere" id="pencere-' + pencereId + '" style="display:block; width:'+ayarlar.width+'; height:'+ayarlar.height+';">\
+					<div style="text-align: right;"><button type="button" onclick="mia.pencere.kapat(\'' + pencereId + '\')">x</button></div>\
+					<div class="pencere-icerik">\
+						<h3 style="color:#777; text-align:center; margin-top:50px;">Yükleniyor...</h3>\
+					</div>\
+				</div>\
+			');
+		}
+
+		if(ayarlar && ayarlar.parcaApiUrl){
+			ajaxGet(ayarlar.parcaApiUrl, function(donenCevap){
+				if(donenCevap){
+					cl(pencereId+" idli pencere detayı api üzerinden yüklendi (URL " + ayarlar.parcaApiUrl + ")");
+
+					// text yığını olarak dönen json verisini parçala ve objeye dönüştür 
+					var donenCevapJson = JSON.parse(donenCevap);
+
+					if(donenCevapJson.sonuc == 1){
+						
+						mia.parcaYukle(ayarlar.parcaAdi,'#pencere-' + pencereId + " .pencere-icerik", donenCevapJson.cevap, function(){ 
+							document.querySelector('#pencere-' + pencereId + " .pencere-icerik").innerHTML=ayarlar.icerik;
+						} );
+					}
+				}
+			});
+		}
+
+		if(ayarlar && ayarlar.icerik){
+			document.querySelector('#pencere-' + pencereId + " .pencere-icerik").innerHTML=ayarlar.icerik;
+		}
+
+
+	},
+
+	kapat: function(pencereId){
+		document.querySelector('#pencere-' + pencereId).remove();
+	},
+
+
+};
