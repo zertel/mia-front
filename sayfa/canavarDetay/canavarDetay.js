@@ -24,7 +24,7 @@ mia.canavarDetay.yuklendiginde = function(){
 						canavar.takimAdi="Demo";
 						canavar.bayginlik=0;
 
-						document.getElementById('canavar-detay-img').src="monster/" + canavar.id + ".png";
+						document.getElementById('canavar-detay-img').src=mia.global.apiHost + "/monster/" + canavar.id + ".png";
 						document.getElementById('canavar-detay-id').innerHTML=canavar.id;
 						document.getElementById('canavar-detay-kalanCan').innerHTML=canavar.kalanCan + "/" + canavar.enYuksekCan;
 						document.getElementById('canavar-detay-saldiriGucu').innerHTML=canavar.saldiriGucu;

@@ -233,3 +233,72 @@ mia.acikDunya.konumlariSurekliYenile = function(){
 		setTimeout(mia.acikDunya.konumlariSurekliYenile, 500);
 	}
 }
+
+
+// canavar detay parçası için
+mia.acikDunya.canavarDetaySiradakiDiyalog = function(canavar,diyalog_id){
+	setTimeout(function(){
+
+		if(!diyalog_id)diyalog_id=0;
+
+		if(canavar){
+			mia.acikDunya.sonDiyalogCanavar=canavar;
+		}
+		else if(mia.acikDunya.sonDiyalogCanavar){
+			canavar=mia.acikDunya.sonDiyalogCanavar;
+		}
+
+		if(canavar){
+			mia.acikDunya.canavarDetayDiyalogYukle(canavar, diyalog_id);
+		}
+
+	},10);
+}
+
+
+mia.acikDunya.canavarDetayDiyalogYukle = function(canavar,diyalog_id){
+	if(canavar && canavar.id){
+
+		if(!diyalog_id)diyalog_id=0;
+
+		// api get isteği ile sıradaki diyaloğu getir
+		ajaxGet(mia.global.apiHost+'/canavar/iknaEt/'+canavar.id + (diyalog_id ? '/'+diyalog_id : ''), function(donenCevap){
+
+			if(donenCevap){
+				cl("iknaEt çalıştı: (URL "+mia.global.apiHost+'/canavar/iknaEt/'+canavar.id + (diyalog_id ? '/'+diyalog_id : '')+")");
+
+				// text yığını olarak dönen json verisini parçala ve objeye dönüştür 
+				var donenCevapJson = JSON.parse(donenCevap);
+
+				if(donenCevapJson.sonuc == 1){
+
+					if(donenCevapJson.cevap && donenCevapJson.cevap.diyalog){
+						var diyalog=donenCevapJson.cevap.diyalog;
+						
+						// diyalog panelini temizle
+						document.getElementById('canavar-detay-diyalog').innerHTML='';
+
+						// canavarın cevabını göster
+						if(diyalog.canavar){
+							document.getElementById('canavar-detay-diyalog').innerHTML +='<h4>Canavar: '+diyalog.canavar+'</h4>';
+						}
+
+						setTimeout(function(){
+							// oyuncunun diyaloğu devam edebileceği metinleri göster
+							if(diyalog.oyuncu){
+								for(diyalog_id in diyalog.oyuncu){
+									document.getElementById('canavar-detay-diyalog').innerHTML +=
+									'<button type="button" onclick="mia.acikDunya.canavarDetaySiradakiDiyalog(0,'+diyalog_id+')">Ben: '+diyalog.oyuncu[diyalog_id]+'</button>';
+								}
+							}
+						},1000);
+					}
+
+				}
+			}
+			
+		});
+
+	}
+
+}

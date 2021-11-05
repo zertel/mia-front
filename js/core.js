@@ -201,7 +201,7 @@ mia.oturum = {
 
 
 mia.pencere = {
-	ac: function(pencereId,ayarlar){
+	ac: function(pencereId,ayarlar,CB){
 
 		if(!ayarlar)ayarlar={};
 		if(!ayarlar.width)ayarlar.width="400px";
@@ -233,6 +233,7 @@ mia.pencere = {
 						
 						mia.parcaYukle(ayarlar.parcaAdi,'#pencere-' + pencereId + " .pencere-icerik", donenCevapJson.cevap, function(){ 
 							document.querySelector('#pencere-' + pencereId + " .pencere-icerik").innerHTML=ayarlar.icerik;
+							if(CB)CB(donenCevapJson.cevap);
 						} );
 					}
 				}
