@@ -61,7 +61,10 @@ mia.sayfaYukle = function(sayfaAdi,parametre){
 	if(parametre){
 		window.location.hash=parametre;
 	}
+	
+	document.body.style.opacity=0;
 	ajaxGet('sayfa/'+sayfaAdi+'/'+sayfaAdi+'.html', function(donenCevap){ 
+
 		// Ajax sonucu dönen cevabı main etiketinin içine yapıştır
 		document.querySelector('main').innerHTML = donenCevap;
 		mia.aktifSayfa = sayfaAdi;
@@ -85,16 +88,20 @@ mia.sayfaYukle = function(sayfaAdi,parametre){
 
 				// script tamamen yüklendikten sonra çalışması gereken fonksiyonu otomatik olarak tetikle
 				script.onload = function(){
-					if(mia[sayfaAdi]['yuklendiginde']){
-						mia[sayfaAdi]['yuklendiginde']();
-					}
+					setTimeout(function(){
+						if(mia[sayfaAdi]['yuklendiginde']){
+							mia[sayfaAdi]['yuklendiginde']();
+						}
+					},10);
 				}
 			}
 			// seçili dosya daha önceden yüklenmiş ise içerisindeki tetik fonksiyonu çalıştır (bu tekrar yüklenmiş hissiyatı veriyor)
 			else{
-				if(mia[sayfaAdi]['yuklendiginde']){
-					mia[sayfaAdi]['yuklendiginde']();
-				}
+				setTimeout(function(){
+					if(mia[sayfaAdi]['yuklendiginde']){
+						mia[sayfaAdi]['yuklendiginde']();
+					}
+				},10);
 			}
 
 		}
@@ -114,35 +121,42 @@ mia.sayfaYukle = function(sayfaAdi,parametre){
 				mia.yukluSayfalar[sayfaAdi].style=styleAdress;
 			}
 		}
-		
+
+		document.body.style.opacity=1;
 	});
 }
 
 
 mia.yukluParcalar=[];
-mia.parcaYukle = function(parcaAdi,hedefAdresi,data,CB){
-	if(mia.yukluParcalar[parcaAdi]){
-		if(CB)CB();
-
-		mia.parcaYerlestir(parcaAdi,hedefAdresi,data);
+mia.parcaYukle = function(parcaAdi,hedefAdresi,data,CB,PCB){
+	if(mia.yukluParcalar[parcaAdi]){ 
+		if(mia.yukluParcalar[parcaAdi]!="Parça yüklenemedi"){
+			if(CB)CB();
+			if(!PCB)PCB=0;
+			mia.parcaYerlestir(parcaAdi,hedefAdresi,data,PCB);
+		}
 	}
 	else{
+		mia.yukluParcalar[parcaAdi]="Parça yüklenemedi";
 		ajaxGet('parca/'+parcaAdi+'/'+parcaAdi+'.html', function(donenCevap){ 
 			if(CB)CB();
 
 			mia.yukluParcalar[parcaAdi]=donenCevap;
-			mia.parcaYerlestir(parcaAdi,hedefAdresi,data);
-			//cl(parcaAdi + ' isimli parça yüklendi ve yerleştirildi');
+			cl(parcaAdi + ' isimli parça yüklendi');
+			if(!PCB)PCB=0;
+			mia.parcaYerlestir(parcaAdi,hedefAdresi,data,PCB);
 		});
 	}
 }
-mia.parcaYerlestir = function(parcaAdi,hedefAdresi,data){
+mia.parcaYerlestir = function(parcaAdi,hedefAdresi,data,CB){
 	if(mia.yukluParcalar[parcaAdi]){
 		var parcaIcerigi=mia.yukluParcalar[parcaAdi];
 		for(key in data){
 			parcaIcerigi = parcaIcerigi.replace(new RegExp('{{'+key+'}}', "g"),data[key]);
 		}
 		document.querySelector(hedefAdresi).innerHTML += parcaIcerigi;
+
+		if(CB)CB(data);
 		cl(parcaAdi + ' isimli parça yerleştirildi');
 	}
 }

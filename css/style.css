@@ -3,8 +3,11 @@ body{
 	margin:0;
 	padding:0;
 
-	background-color: #eee;
+	background-color: #000;
 	font-family: verdana;
+
+	opacity: 0;
+	transition: opacity 0.3s;
 }
 
 

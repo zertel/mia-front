@@ -1,14 +1,16 @@
 <div id="oyuncu_gezgin_simge_{{oyuncu_id}}" style="
-	width: 50px;
-	height: 50px;
+	width: 20px;
+	height: 20px;
 	margin: 0.2em;
+	/*/
 	background-color: white;
 	border-radius: 14px;
 	-webkit-box-shadow: 0px 0px 20px 0px rgba(0,255,0,1);
 	-moz-box-shadow: 0px 0px 20px 0px rgba(0,255,0,1);
 	box-shadow: 0px 0px 20px 0px rgba(0,255,0,1);
-
 	background-image: url('http://localhost:83/monster/{{canavar_id}}.png');
+	/*/
+
 	background-size: contain;
 	background-repeat: no-repeat;
 
@@ -16,10 +18,10 @@
 	left: {{x}}px;
 	top: {{y}}px;
 
-	transition: left 2s, top 2s;
+	transition: left linear {{transitionDuration}}s, top linear {{transitionDuration}}s;
 
 	">
-	<span style="
+	<!--span style="
 		background-color: #f39c12;
 		color:white;
 		font-size: 10px;
@@ -29,5 +31,18 @@
 		left: 14px;
 		border-radius: 6px;
 		"
-	>{{oyuncu_id}}</span>
+	>{{oyuncu_id}}</span-->
+
+	<div id="oyuncu_gezgin_simge_{{oyuncu_id}}_slayt" class="slayt-yoneticisi" style="width: 20px; height: 20px;">
+		<div class="slayt">
+			<img src="parca/oyuncuGezginSimge/img/1.png" width="100%">
+		</div>
+		<div class="slayt">
+			<img src="parca/oyuncuGezginSimge/img/2.png" width="100%">
+		</div>
+		<div class="slayt">
+			<img src="parca/oyuncuGezginSimge/img/3.png" width="100%">
+		</div>
+	</div>
+
 </div>
