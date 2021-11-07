@@ -161,6 +161,35 @@ mia.parcaYerlestir = function(parcaAdi,hedefAdresi,data,CB){
 	}
 }
 
+mia.parcaCokluYukle = function(parcaAdi,hedefAdresi,data,CB,PCB){
+	if(mia.yukluParcalar[parcaAdi]){ 
+		if(mia.yukluParcalar[parcaAdi]!="Parça yüklenemedi"){
+			if(CB)CB();
+			if(!PCB)PCB=0;
+			mia.parcaCokluYerlestir(parcaAdi,hedefAdresi,data,PCB);
+		}
+	}
+	else{
+		mia.yukluParcalar[parcaAdi]="Parça yüklenemedi";
+		ajaxGet('parca/'+parcaAdi+'/'+parcaAdi+'.html', function(donenCevap){ 
+			if(CB)CB();
+
+			mia.yukluParcalar[parcaAdi]=donenCevap;
+			cl(parcaAdi + ' isimli parça yüklendi');
+			if(!PCB)PCB=0;
+			mia.parcaCokluYerlestir(parcaAdi,hedefAdresi,data,PCB);
+		});
+	}
+}
+mia.parcaCokluYerlestir = function(parcaAdi,hedefAdresi,data,CB){
+	if(data && mia.yukluParcalar[parcaAdi]){
+		for(i in data){
+			mia.parcaYerlestir(parcaAdi,hedefAdresi,data[i],CB);
+		}
+	}
+	else cl(parcaAdi + ' yüklenmeden yerleştirme istendi.');
+}
+
 
 mia.oturum = {
 	durum: 0,
@@ -264,6 +293,66 @@ mia.pencere = {
 	kapat: function(pencereId){
 		document.querySelector('#pencere-' + pencereId).remove();
 	},
+};
 
 
+
+mia.panel = {
+	ac: function(panelId,ayarlar,CB){
+
+		if(!ayarlar)ayarlar={};
+		if(!ayarlar.width)ayarlar.width="auto";
+		if(!ayarlar.height)ayarlar.height="auto";
+		if(!ayarlar.icerik)ayarlar.icerik="";
+		if(!ayarlar.cokluParca)ayarlar.cokluParca=0;
+
+
+		// Eğer yok ise pencereyi oluştur (create html elements)
+		if(!document.getElementById('panel-'+panelId)){
+			document.body.insertAdjacentHTML("beforeend", '\
+				<div class="panel" id="panel-' + panelId + '" style="display:block; width:'+ayarlar.width+'; height:'+ayarlar.height+';">\
+					<div style="position:fixed;top:0;right:0;bottom:'+ayarlar.height+';left:0;" onclick="mia.panel.kapat(\'' + panelId + '\')">&nbsp;</div>\
+					<div class="panel-icerik">\
+						<h3 style="color:#fff; text-align:center;">Yükleniyor...</h3>\
+					</div>\
+				</div>\
+			');
+		}
+
+		if(ayarlar && ayarlar.parcaApiUrl){
+			ajaxGet(ayarlar.parcaApiUrl, function(donenCevap){
+				if(donenCevap){
+					cl(panelId+" idli panel detayı api üzerinden yüklendi (URL " + ayarlar.parcaApiUrl + ")");
+
+					// text yığını olarak dönen json verisini parçala ve objeye dönüştür 
+					var donenCevapJson = JSON.parse(donenCevap);
+
+					if(donenCevapJson.sonuc == 1){
+						
+						var xcb=function(){ 
+							document.querySelector('#panel-' + panelId + " .panel-icerik").innerHTML=ayarlar.icerik;
+							if(CB)CB(donenCevapJson.cevap);
+						};
+
+						if(ayarlar.cokluParca){
+							mia.parcaCokluYukle(ayarlar.parcaAdi,'#panel-' + panelId + " .panel-icerik", donenCevapJson.cevap, xcb );
+						}
+						else{
+							mia.parcaYukle(ayarlar.parcaAdi,'#panel-' + panelId + " .panel-icerik", donenCevapJson.cevap, xcb );
+						}
+					}
+				}
+			});
+		}
+
+		if(ayarlar && ayarlar.icerik){
+			document.querySelector('#panel-' + panelId + " .panel-icerik").innerHTML=ayarlar.icerik;
+		}
+
+
+	},
+
+	kapat: function(panelId){
+		document.querySelector('#panel-' + panelId).remove();
+	},
 };

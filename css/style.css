@@ -107,3 +107,35 @@ main .yukleniyor{
 }
 .pencere .pencere-icerik{
 }
+
+.panel{
+	display: none;
+	position: fixed;
+
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	height: 0px;
+
+	background-color: rgba(0,0,0,0.4);
+
+
+	-webkit-box-shadow: -10px 0px 15px 0px rgba(0,0,0,0.3);
+	-moz-box-shadow: -10px 0px 15px 0px rgba(0,0,0,0.3);
+	box-shadow: -10px 0px 15px 0px rgba(0,0,0,0.3);
+
+	padding: 1em;
+	box-sizing: border-box;	
+	overflow-x: scroll;
+	overflow-y: hidden;
+
+	transition: height 1s;
+}
+.panel .panel-icerik{
+	width: 5000px;
+}
+.panel .yukleniyor{
+	color: white;
+
+}

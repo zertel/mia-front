@@ -344,3 +344,33 @@ mia.acikDunya.canavarDetayDiyalogYukle = function(canavar,diyalog_id){
 	}
 
 }
+
+
+// şef canavarı seçmek için
+mia.acikDunya.canavarSecimPencerisiAc = function(){
+	mia.panel.ac('canavar-sec',{
+		parcaAdi:'canavarSecimKarti',
+		parcaApiUrl: 'http://localhost:83/hesap/canavarlarim/0/100',
+		cokluParca: 1,
+		height: '260px'
+	});
+}
+
+mia.acikDunya.canavarSec = function(canavar_id){
+	// api get isteği ile canavarı değiştir
+	ajaxGet(mia.global.apiHost+'/canavar/sec/'+canavar_id, function(donenCevap){
+
+		if(donenCevap){
+			cl("canavar/sec apisi çalıştı: (URL "+mia.global.apiHost+'/canavar/sec/'+canavar_id+"')");
+
+			// text yığını olarak dönen json verisini parçala ve objeye dönüştür 
+			var donenCevapJson = JSON.parse(donenCevap);
+
+			if(donenCevapJson.sonuc == 1){
+				cl("canavarSec:",donenCevapJson);
+				alert(canavar_id + " idli canavar şef olarak seçildi.");
+			}
+		}
+		
+	});
+}
