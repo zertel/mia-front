@@ -13,8 +13,10 @@ mia.acikDunya.yuklendiginde = function(){
 		cl("Sahne boyutu: x:", window.innerWidth, "y:", window.innerHeight);
 
 		sahne.addEventListener("click", function(e){
-			var konum = mia.acikDunya.konumHesapla(e.pageX,e.pageY);
-			mia.acikDunya.hedefeGit(konum.x,konum.y);
+			if(e.target.className == 'container'){
+				var konum = mia.acikDunya.konumHesapla(e.pageX,e.pageY);
+				mia.acikDunya.hedefeGit(konum.x,konum.y);
+			}
 		});
 
 		mia.acikDunya.scrollXStart=0;
@@ -350,7 +352,7 @@ mia.acikDunya.canavarDetayDiyalogYukle = function(canavar,diyalog_id){
 mia.acikDunya.canavarSecimPencerisiAc = function(){
 	mia.panel.ac('canavar-sec',{
 		parcaAdi:'canavarSecimKarti',
-		parcaApiUrl: 'http://localhost:83/hesap/canavarlarim/0/100',
+		parcaApiUrl: 'http://localhost:83/hesap/canavarlarim/00/100',
 		cokluParca: 1,
 		height: '260px'
 	});

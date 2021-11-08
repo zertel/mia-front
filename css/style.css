@@ -133,7 +133,7 @@ main .yukleniyor{
 	transition: height 1s;
 }
 .panel .panel-icerik{
-	width: 5000px;
+	width: 20000px;
 }
 .panel .yukleniyor{
 	color: white;
