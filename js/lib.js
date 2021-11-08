@@ -201,6 +201,35 @@ mia.slaytYoneticisi = {
 
 }
 
+/*/ SLAYT TANIMLAMA ÖRNEĞİ
+
+	mia.slaytYoneticisi.tanimla('#oyuncu_gezgin_simge_'+data.oyuncu_id+'_slayt', {
+		tekrarEt: 0,
+		slaytAyarlari: [
+			{
+				"belirmeSuresi": 1,
+				"beklemeSuresi": 100,
+				"kaybolmaSuresi": 1
+			},
+			{
+				"belirmeSuresi": 1,
+				"beklemeSuresi": 100,
+				"kaybolmaSuresi": 1
+			},
+			{
+				"belirmeSuresi": 1,
+				"beklemeSuresi": 100,
+				"kaybolmaSuresi": 1
+			}
+		],
+		bittigindeCalistir: function(id){ 
+			//mia.slaytYoneticisi.beklet(id);
+		}
+	});
+
+	//mia.slaytYoneticisi.baslat('#oyuncu_gezgin_simge_'+mia.oturum.hesap.id+'_slayt');
+
+/*/
 
 
 
@@ -234,3 +263,114 @@ mia.sesYoneticisi = {
 	}
 
 };
+
+// Ses yöneticisi
+mia.yukluSpriteler = {};
+mia.tanimliSpriteler = {};
+mia.spriteYoneticisi = {
+	yukle: function(spriteAdi,dosyaAdresi,ayarlar,CB){
+		if(spriteAdi && dosyaAdresi){
+
+			cl(spriteAdi+" isimli sprite yükleniyor...");
+			var sprite = new Image();
+
+			sprite.src = dosyaAdresi;
+			mia.yukluSpriteler[spriteAdi] = sprite;
+			mia.yukluSpriteler[spriteAdi].yuklendi=0;
+
+			mia.yukluSpriteler[spriteAdi].ayarlar={};
+			if(ayarlar.genislik){
+				mia.yukluSpriteler[spriteAdi].ayarlar.genislik=ayarlar.genislik;
+			}
+			if(ayarlar.yukseklik){
+				mia.yukluSpriteler[spriteAdi].ayarlar.yukseklik=ayarlar.yukseklik;
+			}
+			if(ayarlar.animasyon){
+				mia.yukluSpriteler[spriteAdi].ayarlar.animasyon=ayarlar.animasyon;
+			}
+
+			sprite.onload=function(){
+				mia.yukluSpriteler[spriteAdi].yuklendi=1;
+				cl(spriteAdi+" isimli sprite yüklendi.");
+
+				if(CB)CB(spriteAdi);
+			};
+		}
+	},
+
+	tanimla: function(hedefAdresi,spriteAdi){
+		if(mia.yukluSpriteler && mia.yukluSpriteler[spriteAdi]){
+			mia.tanimliSpriteler[hedefAdresi]={
+				spriteAdi:spriteAdi,
+				oynat:0
+			};
+			document.querySelector(hedefAdresi).style.backgroundImage="url(" + mia.yukluSpriteler[spriteAdi].src + ")";
+		}
+	},
+
+	goster: function(hedefAdresi,x,y){
+		var spriteAdi=mia.tanimliSpriteler[hedefAdresi].spriteAdi;
+		document.querySelector(hedefAdresi).style.backgroundPosition = 
+			(-((x-1)* mia.yukluSpriteler[spriteAdi].ayarlar.genislik )) + "px " + 
+			(-((y-1)* mia.yukluSpriteler[spriteAdi].ayarlar.yukseklik )) + "px";
+	},
+
+	baslat: function(hedefAdresi,animasyonAdi,hiz){
+		mia.tanimliSpriteler[hedefAdresi].oynat=1;
+		mia.spriteYoneticisi.oynat(hedefAdresi,animasyonAdi,hiz);
+	},
+
+	durdur: function(hedefAdresi,animasyonAdi,hiz,frameNo){
+		mia.tanimliSpriteler[hedefAdresi].oynat=0;
+	},
+
+	oynat: function(hedefAdresi,animasyonAdi,hiz,frameNo){
+		if(hedefAdresi && animasyonAdi){
+
+			var spriteAdi=mia.tanimliSpriteler[hedefAdresi].spriteAdi;
+			var oynat=mia.tanimliSpriteler[hedefAdresi].oynat;
+			if(mia.yukluSpriteler[spriteAdi].ayarlar.animasyon){
+				var animasyon=mia.yukluSpriteler[spriteAdi].ayarlar.animasyon[animasyonAdi];
+				
+				if(!frameNo)frameNo=animasyon.x;
+
+				mia.spriteYoneticisi.goster(hedefAdresi,frameNo,animasyon.y);
+
+				if(oynat){
+					if(frameNo<animasyon.son){
+						frameNo++;
+					}
+					else{
+						frameNo=0;
+					}
+
+					setTimeout(function(){
+						mia.spriteYoneticisi.oynat(hedefAdresi,animasyonAdi,hiz,frameNo);
+					},hiz);
+				}
+			}
+		}
+	}
+
+};
+
+/*/ SPRITE TANIMLAMA ÖRNEĞİ
+
+	mia.spriteYoneticisi.yukle('oyuncu','sayfa/acikDunya/img/demo-char-80x120.png',{
+		genislik: 20,
+		yukseklik: 30,
+		hiz: 100,
+		animasyon: {
+			yukarı:{x:1, y:2, son:4},
+			sağa:{x:1, y:4, son:4},
+			aşağı:{x:1, y:1, son:4},
+			sola:{x:1, y:3, son:4}
+		}
+	},function(){
+
+		mia.spriteYoneticisi.baslat('#oyuncu-1','down',100);
+		mia.spriteYoneticisi.baslat('#oyuncu-2','right',100);
+
+	});
+
+/*/

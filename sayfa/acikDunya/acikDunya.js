@@ -4,6 +4,19 @@ mia.acikDunya={};
 mia.acikDunya.yuklendiginde = function(){
 	cl("acikDunya.yuklendiginde() fonksiyonu çalıştı");
 
+
+	// Oyuncu spritesini önceden yüklemeyi başlat
+	mia.spriteYoneticisi.yukle('cibiliMons','sayfa/acikDunya/img/cibili-mons-60x20.png',{
+		genislik: 20,
+		yukseklik: 20,
+		hiz: 50,
+		animasyon: {
+			yürü:{x:1, y:1, son:3}
+		}
+	});
+	
+	
+
 	// api üzerinden oyuncu konumlarını getiren fonksiyonu sürekli çağıran fonksiyonu çağır
 	mia.acikDunya.konumlariSurekliYenile();
 
@@ -139,13 +152,7 @@ mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 			}
 			else{
 				var konumObj = mia.acikDunya.konumCoz(mia.acikDunya.oyuncuKonumlari[key][2], mia.acikDunya.oyuncuKonumlari[key][3]);
-				/*/
-				var konumObj={
-					canavar_id:canavar_id,
-					x: Math.ceil(window.innerWidth / 1000 * mia.acikDunya.oyuncuKonumlari[key][2]),
-					y: Math.ceil(window.innerHeight / 1000 * mia.acikDunya.oyuncuKonumlari[key][3])
-				}
-				/*/
+
 				konumObj.oyuncu_id = oyuncu_id;
 				konumObj.canavar_id = canavar_id;
 				konumObj.transitionDuration = mia.acikDunya.oyuncuKonumlari[key][6];
@@ -153,29 +160,8 @@ mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 				cl("Oyuncu Konum Obj:",konumObj);
 				mia.parcaYukle('oyuncuGezginSimge', '#acik-dunya-sahne .container', konumObj, 0, function(data){
 
-					mia.slaytYoneticisi.tanimla('#oyuncu_gezgin_simge_'+data.oyuncu_id+'_slayt', {
-						tekrarEt: 0,
-						slaytAyarlari: [
-							{
-								"belirmeSuresi": 1,
-								"beklemeSuresi": 100,
-								"kaybolmaSuresi": 1
-							},
-							{
-								"belirmeSuresi": 1,
-								"beklemeSuresi": 100,
-								"kaybolmaSuresi": 1
-							},
-							{
-								"belirmeSuresi": 1,
-								"beklemeSuresi": 100,
-								"kaybolmaSuresi": 1
-							}
-						],
-						bittigindeCalistir: function(id){ 
-							//mia.slaytYoneticisi.beklet(id);
-						}
-					});
+					// Parça yüklemesi bittiğinde, bu parçaya animasyonlu sprite tanımla
+					mia.spriteYoneticisi.tanimla('#oyuncu_gezgin_simge_'+data.oyuncu_id,'cibiliMons');
 
 				});
 			}
@@ -235,8 +221,6 @@ mia.acikDunya.hedefeGit = function(x,y){
 
 	// api get isteği ile konumu değiştir
 	ajaxGet(mia.global.apiHost+'/sahne/hedefeGit/'+x+'/'+y, function(donenCevap){
-		mia.yukluSlaytlar['#oyuncu_gezgin_simge_'+mia.oturum.hesap.id+'_slayt'].ayarlar.tekrarEt=1;
-		mia.slaytYoneticisi.baslat('#oyuncu_gezgin_simge_'+mia.oturum.hesap.id+'_slayt');
 
 		if(donenCevap){
 			cl("hedefeGit apisi çalıştı: (URL "+mia.global.apiHost+'/sahne/hedefeGit/'+x+'/'+y+"')");
@@ -246,18 +230,25 @@ mia.acikDunya.hedefeGit = function(x,y){
 
 			if(donenCevapJson.sonuc == 1){
 				cl("hedefeGit:",donenCevapJson);
-
+				
 				if(donenCevapJson.cevap[0] && donenCevapJson.cevap[0].oyuncu_id){
+
+					// Gezinti başladıysa, tanımlı sprite animasyonu başlat
+					mia.spriteYoneticisi.baslat('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id,'yürü',100);
+
 					var oyuncuGezginSimge = document.querySelector('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id);
 					if(oyuncuGezginSimge){
 						oyuncuGezginSimge.style.transitionDuration = 
 							donenCevapJson.cevap[0].hedefeKalanSure+"s, "+
 							donenCevapJson.cevap[0].hedefeKalanSure+"s";
 
-							setTimeout(function(){
-								mia.yukluSlaytlar['#oyuncu_gezgin_simge_'+mia.oturum.hesap.id+'_slayt'].ayarlar.tekrarEt=0;
-								mia.slaytYoneticisi.beklet('#oyuncu_gezgin_simge_'+oyuncu_id+'_slayt');
-							},donenCevapJson.cevap[0].hedefeKalanSure*1000);
+						setTimeout(function(){
+
+							// Gezinti bittiyse sprite animasyonu durdur
+							mia.spriteYoneticisi.durdur('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id,'yürü');
+						
+						},donenCevapJson.cevap[0].hedefeKalanSure*1000);
+
 					}
 				}
 			}

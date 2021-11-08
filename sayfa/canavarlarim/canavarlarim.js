@@ -13,7 +13,7 @@ mia.canavarlarim.yuklendiginde = function(){
 mia.canavarlarim.yukle = function(){
 
 	// istenen adet aralığındaki canavarları api üzerinden getir
-	ajaxGet('http://localhost:83/hesap/canavarlarim/' + mia.canavarlarim.yuklenenAdet + '/10',function(donenCevap){
+	ajaxGet('http://localhost:83/hesap/canavarlarim/' + ( mia.canavarlarim.yuklenenAdet ? mia.canavarlarim.yuklenenAdet + '/10': '10' ),function(donenCevap){
 		if(donenCevap){
 			cl("canavarlar api üzerinden yüklendi (URL http://localhost:83/hesap/canavarlarim)");
 
