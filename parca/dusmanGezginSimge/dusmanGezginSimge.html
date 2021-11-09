@@ -1,19 +1,29 @@
-<div id="dusman_gezgin_simge_{{dusman_id}}" style="
-	width: 50px;
-	height: 50px;
-	margin: 0.2em;
-	border-radius: 14px;
+<div id="dusman_gezgin_simge_{{dusman_id}}" 
 
-	background-image: url('parca/dusmanGezginSimge/img/{{tip}}.png');
-	background-size: contain;
-	background-repeat: no-repeat;
+	onclick="
+		mia.pencere.ac('dusman-detay',{
+			parcaAdi:'dusmanDetay',
+			parcaApiUrl: 'http://localhost:83/dusman/detay/{{dusman_id}}',
+			width: '500px',
+			height: '500px'
+		})" 
 
-	position: absolute;
-	left: {{x}}px;
-	top: {{y}}px;
+	style="
+		width: 50px;
+		height: 50px;
+		margin: 0.2em;
+		border-radius: 14px;
 
-	transition: left 2s, top 2s;
+		background-image: url('parca/dusmanGezginSimge/img/{{tip}}.png');
+		background-size: contain;
+		background-repeat: no-repeat;
 
+		position: absolute;
+		left: {{x}}px;
+		top: {{y}}px;
+
+		transition: left 2s, top 2s;
+		cursor: pointer;
 	">
 	<span style="
 		color:white;

@@ -1,0 +1,30 @@
+<h2>#{{id}} idli düşmanın detay bilgileri</h2>
+<div class="flex-container">
+	<div class="flex-4">
+		<img src="parca/dusmanGezginSimge/img/{{tip}}.png" class="golge-1" width="100">
+	</div>
+	<div class="flex-7">
+		<ul>
+			<li><span>ID</span><span>: #{{id}}</span></li>
+			<li><span>Can</span><span>: ♥{{kalanCan}}/{{enYuksekCan}}</span></li>
+			<li><span>Güç</span><span>: ♣{{saldiriGucu}}</span></li>
+			<li><span>Seviye</span><span>: {{seviye}}</span></li>
+		</ul>
+	</div>
+</div>
+<hr>
+<h3>#{{id}} ile savaş</h3>
+<button 
+
+	onclick="mia.acikDunya.dusmanaSaldir('{{id}}')" 
+
+	style="
+	    background-color: rgba(255,0,0,0.5);
+	    color: #fff;
+	    font-size: 20pt;
+	    padding: 0.4em;
+	    margin: 0.2em;
+	    border-radius: 3px;
+	    border: 1px solid #666;
+	    cursor: pointer;
+">Atak yap</button>

@@ -361,9 +361,53 @@ mia.acikDunya.canavarSec = function(canavar_id){
 
 			if(donenCevapJson.sonuc == 1){
 				cl("canavarSec:",donenCevapJson);
-				alert(canavar_id + " idli canavar şef olarak seçildi.");
+
+				mia.acikDunya.seciliCanavar = donenCevapJson.cevap;
+
+				alert(canavar_id + " idli canavar saldırı için seçildi.");
 			}
 		}
 		
 	});
+}
+
+
+mia.acikDunya.dusmanaSaldir = function(dusman_id){
+	if(dusman_id){
+		mia.acikDunya.seciliDusman = dusman_id;
+	}
+	else if(mia.acikDunya.seciliDusman){
+		dusman_id = mia.acikDunya.seciliDusman;
+	}
+
+	canavar_id=0;
+	if(mia.acikDunya.seciliCanavar && mia.acikDunya.seciliCanavar.id){
+		canavar_id = mia.acikDunya.seciliCanavar.id;
+	}
+
+	if(dusman_id && canavar_id){
+		// api get isteği ile düşmana saldırı gerçekleştir
+		ajaxGet(mia.global.apiHost+'/dusman/saldir/'+canavar_id+'/'+dusman_id, function(donenCevap){
+
+			if(donenCevap){
+				cl("dusman/saldir apisi çalıştı: (URL "+mia.global.apiHost+'/dusman/saldir/'+canavar_id+'/'+dusman_id+")");
+
+				// text yığını olarak dönen json verisini parçala ve objeye dönüştür 
+				var donenCevapJson = JSON.parse(donenCevap);
+
+				if(donenCevapJson.sonuc == 1){
+					cl("dusmanaSaldiri:",donenCevapJson);
+					alert("Saldırı gerçekleşti, "+donenCevapJson.cevap.saldiri.verilenHasar+" hasar verildi.");
+				}
+				else{
+					alert(donenCevapJson.mesaj);
+				}
+			}
+			
+		});
+	}
+	else if(dusman_id){
+		mia.acikDunya.canavarSecimPencerisiAc();
+	}
+
 }
