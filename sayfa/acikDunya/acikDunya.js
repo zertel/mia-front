@@ -4,17 +4,22 @@ mia.acikDunya={};
 mia.acikDunya.yuklendiginde = function(){
 	cl("acikDunya.yuklendiginde() fonksiyonu çalıştı");
 
-
 	// Oyuncu spritesini önceden yüklemeyi başlat
 	mia.spriteYoneticisi.yukle('cibiliMons','sayfa/acikDunya/img/cibili-mons-60x20.png',{
 		genislik: 20,
 		yukseklik: 20,
 		hiz: 50,
 		animasyon: {
-			yürü:{x:1, y:1, son:3}
+			yürü:{x:1, y:1, son:3},
+			hasarAl:{x:1, y:1, son:2}
 		}
 	});
 	
+	// Sahnede bir çok defa kullanılacak ses dosyalarını yükle
+	mia.sesYoneticisi.yukle('hasarAlmaEfektSesi','sayfa/acikDunya/mp3/hasar-alma-efekt-sesi.mp3',0.2);
+	mia.sesYoneticisi.yukle('yildirimDusmeSesi','sayfa/acikDunya/mp3/yildirim-dusme-efekt-sesi.mp3',0.1);
+	mia.sesYoneticisi.yukle('elektrikSesi','sayfa/acikDunya/mp3/elektrik-efekt-sesi.mp3',0.1);
+
 	
 
 	// api üzerinden oyuncu konumlarını getiren fonksiyonu sürekli çağıran fonksiyonu çağır
@@ -109,8 +114,14 @@ mia.acikDunya.konumCoz = function(x,y){
 
 // api üzerinden oyuncu konumlarını getiren fonksiyon
 mia.acikDunya.konumlariGetir = function(){
+	if(mia.acikDunya.sonIstekZamani){
+		sonIstekZamani = mia.acikDunya.sonIstekZamani;
+	}
+
 	// api üzerinden oyuncu konumlarını getir
-	ajaxGet(mia.global.apiHost+'/sahne/konumlariGetir/1',function(donenCevap){
+	ajaxGet(mia.global.apiHost+'/sahne/konumlariGetir/1'+
+		(mia.acikDunya.sonIstekZamani ? '/' + mia.acikDunya.sonIstekZamani : '')
+		,function(donenCevap){
 
 		if(donenCevap){
 			//cl("Konumlar api üzerinden yüklendi (URL "+mia.global.apiHost+"/sahne/konumlariGetir/1')");
@@ -119,6 +130,7 @@ mia.acikDunya.konumlariGetir = function(){
 			var donenCevapJson = JSON.parse(donenCevap);
 
 			if(donenCevapJson.sonuc == 1){
+				mia.acikDunya.sonIstekZamani = donenCevapJson.cevap.sonIstekZamani;
 
 				// objeye dönüşmüş oyuncuKonumlari verisini RAM'a (mia.acikDunya objemizin içine) yükle
 				mia.acikDunya.oyuncuKonumlari = donenCevapJson.cevap.oyuncu.konum.degerler;
@@ -129,6 +141,19 @@ mia.acikDunya.konumlariGetir = function(){
 				mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle();
 				mia.acikDunya.canavarGezginSimgeKonumlariGuncelle();
 				mia.acikDunya.dusmanGezginSimgeKonumlariGuncelle();
+
+				if(donenCevapJson.cevap.dusman.saldiri.degerler.length>0){
+					var saldiri=donenCevapJson.cevap.dusman.saldiri.degerler;
+					for(i in saldiri){
+						mia.acikDunya.dusmanSaldirdi(saldiri[i][0]);
+
+						setTimeout(function(){
+							mia.acikDunya.oyuncuHasarAldi(saldiri[i][1],saldiri[i][4]);
+						},saldiri[i][2]*1000);
+
+					}
+					cl("Düşman saldırısı bulundu");
+				}
 			}
 		}
 		
@@ -162,7 +187,6 @@ mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 
 					// Parça yüklemesi bittiğinde, bu parçaya animasyonlu sprite tanımla
 					mia.spriteYoneticisi.tanimla('#oyuncu_gezgin_simge_'+data.oyuncu_id,'cibiliMons');
-
 				});
 			}
 		}
@@ -265,7 +289,7 @@ mia.acikDunya.konumlariSurekliYenile = function(){
 		// api üzerinden oyuncu konumlarını getiren fonksiyonu çağır
 		mia.acikDunya.konumlariGetir();
 
-		setTimeout(mia.acikDunya.konumlariSurekliYenile, 500);
+		setTimeout(mia.acikDunya.konumlariSurekliYenile, 2000);
 	}
 }
 
@@ -410,4 +434,136 @@ mia.acikDunya.dusmanaSaldir = function(dusman_id){
 		mia.acikDunya.canavarSecimPencerisiAc();
 	}
 
+}
+
+
+
+
+mia.acikDunya.dusmanSaldirdi = function(dusman_id){
+	if(dusman_id){
+		var dusmanGezginSimge = document.getElementById('dusman_gezgin_simge_'+dusman_id);
+		if(dusmanGezginSimge){
+						
+			//mia.sesYoneticisi.durdur('yildirimDusmeSesi');
+			//mia.sesYoneticisi.oynat('yildirimDusmeSesi');
+			mia.sesYoneticisi.oynat('elektrikSesi');
+			
+			setTimeout(function(){
+				//mia.spriteYoneticisi.baslat('#oyuncu_gezgin_simge_'+oyuncu_id,'hasarAl',30);
+				var dusmanGezginSimgeHasarX = document.getElementById('dusman_gezgin_simge_'+dusman_id+'_saldiri_x');
+				setTimeout(function(){
+					//mia.spriteYoneticisi.durdur('#oyuncu_gezgin_simge_'+oyuncu_id);
+
+					if(dusmanGezginSimgeHasarX){
+						dusmanGezginSimgeHasarX.style.display="none";
+					}
+
+					var dusmanGezginSimgeHasarX2 = document.getElementById('dusman_gezgin_simge_'+dusman_id+'_saldiri_x2');
+					if(dusmanGezginSimgeHasarX2){
+						dusmanGezginSimgeHasarX2.style.display="block";
+					}
+					setTimeout(function(){
+						if(dusmanGezginSimgeHasarX2){
+							dusmanGezginSimgeHasarX2.style.display="none";
+						}
+
+						dusmanGezginSimgeHasarX.style.display="block";
+						setTimeout(function(){
+								dusmanGezginSimgeHasarX.style.display="none";
+						},160);
+
+					},160);
+
+				},160);
+
+				if(dusmanGezginSimgeHasarX){
+					dusmanGezginSimgeHasarX.style.display="block";
+				}
+
+			},180);
+
+
+		}
+	}
+}
+
+mia.acikDunya.oyuncuHasarAldi = function(oyuncu_id,saldiriTipi){
+	if(!oyuncu_id && mia.oturum && mia.oturum.durum){
+		oyuncu_id = mia.oturum.hesap.id;
+	}
+	if(oyuncu_id){
+		var oyuncuGezginSimge = document.getElementById('oyuncu_gezgin_simge_'+oyuncu_id);
+		if(oyuncuGezginSimge){
+
+
+			// saldırı tipine göre efektler
+			switch(saldiriTipi){
+				case "YILDIRIM_DÜŞMESİ":
+
+					mia.sesYoneticisi.oynat('yildirimDusmeSesi',0.01);
+
+					var yildirimDusmesi = document.getElementById('oyuncu_gezgin_simge_'+oyuncu_id+'_hasar_YILDIRIM_DÜŞMESİ_1');
+					if(yildirimDusmesi){
+						yildirimDusmesi.style.display="block";
+					}
+					setTimeout(function(){
+						if(yildirimDusmesi){
+							yildirimDusmesi.style.display="none";
+						}
+						var yildirimDusmesi2 = document.getElementById('oyuncu_gezgin_simge_'+oyuncu_id+'_hasar_YILDIRIM_DÜŞMESİ_2');
+						if(yildirimDusmesi2){
+							yildirimDusmesi2.style.display="block";
+						}
+						setTimeout(function(){
+							if(yildirimDusmesi2){
+								yildirimDusmesi2.style.display="none";
+							}
+						},400);
+					},60);
+					
+					break;
+
+
+				default:
+					break;
+			}
+
+
+
+			// her hasarda beliren efektler
+			setTimeout(function(){
+
+				mia.spriteYoneticisi.baslat('#oyuncu_gezgin_simge_'+oyuncu_id,'hasarAl',30);
+				var oyuncuGezginSimgeHasarX = document.getElementById('oyuncu_gezgin_simge_'+oyuncu_id+'_hasar_x');
+				
+				setTimeout(function(){
+					mia.spriteYoneticisi.durdur('#oyuncu_gezgin_simge_'+oyuncu_id);
+
+					if(oyuncuGezginSimgeHasarX){
+						oyuncuGezginSimgeHasarX.style.display="none";
+					}
+
+					var oyuncuGezginSimgeHasarX2 = document.getElementById('oyuncu_gezgin_simge_'+oyuncu_id+'_hasar_x2');
+					if(oyuncuGezginSimgeHasarX2){
+						oyuncuGezginSimgeHasarX2.style.display="block";
+					}
+					setTimeout(function(){
+						if(oyuncuGezginSimgeHasarX2){
+							oyuncuGezginSimgeHasarX2.style.display="none";
+						}
+					},160);
+
+				},160);
+
+				if(oyuncuGezginSimgeHasarX){
+					oyuncuGezginSimgeHasarX.style.display="block";
+				}
+
+				mia.sesYoneticisi.oynat('hasarAlmaEfektSesi',0.2);
+			},60);
+
+
+
+		}
+	}
 }

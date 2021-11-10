@@ -1,5 +1,7 @@
 cl("lib.js yüklendi");
 
+
+// Slayt yöneticisi
 mia.yukluSlaytlar = {};
 mia.slaytYoneticisi = {
 
@@ -30,7 +32,6 @@ mia.slaytYoneticisi = {
 		],
 		"bittigindeCalistir": function(){},
 	},
-
 
 	// Slayt geçişi yapılacak html grubunun varsayılan slayt özelliklerine sahip olabilmesi ve ayarlarının yapılabilmesi için tanımlama fonksiyonu
 	tanimla: function(id,ayarlar){
@@ -80,10 +81,6 @@ mia.slaytYoneticisi = {
 
 	},
 
-
-
-
-
 	baslat: function(id){
 		var aktifSlayt=mia.yukluSlaytlar[id];
 		aktifSlayt.no=0;
@@ -102,10 +99,6 @@ mia.slaytYoneticisi = {
 		aktifSlayt.beklet=0;
 		mia.slaytYoneticisi.sonraki(id);
 	},
-
-
-
-
 
 	sonraki: function(id){
 		var aktifSlayt=mia.yukluSlaytlar[id];
@@ -235,18 +228,25 @@ mia.slaytYoneticisi = {
 
 
 
+
+
+
+
 // Ses yöneticisi
 mia.yukluSesler = {};
 mia.sesYoneticisi = {
 
-	yukle: function(id,dosyaAdresi){
+	yukle: function(id,dosyaAdresi,sesDuzeyi){
+		if(!sesDuzeyi)sesDuzeyi=0.5;
 		mia.yukluSesler[id] = new Audio(dosyaAdresi);
+		mia.yukluSesler[id].volume=sesDuzeyi;
 	},
 
-	oynat: function(id){
-		if(mia.yukluSesler[id]){
-			mia.yukluSesler[id].play();
+	oynat: function(id,baslangicZamani){
+		if(baslangicZamani){
+			mia.yukluSesler[id].currentTime = baslangicZamani;
 		}
+		mia.yukluSesler[id].play();
 	},
 
 	duraklat: function(id){
@@ -260,11 +260,33 @@ mia.sesYoneticisi = {
 			mia.yukluSesler[id].pause();
 			mia.yukluSesler[id].currentTime = 0;
 		}
+	},
+
+	sesDuzeyi: function(id,sesDuzeyi){
+		if(mia.yukluSesler[id]){
+			mia.yukluSesler[id].volume = sesDuzeyi;
+		}
 	}
 
 };
 
-// Ses yöneticisi
+/*/ SES YÜKLEME VE ÖYNATMA ÖRNEĞİ
+
+	mia.sesYoneticisi.yukle('intro','sayfa/intro/mp3/intro.mp3');
+	mia.sesYoneticisi.oynat('intro'); // kaldığı yerden devam et
+	mia.sesYoneticisi.duraklat('intro'); // pause
+	mia.sesYoneticisi.durdur('intro'); // sonlandır
+	
+/*/
+
+
+
+
+
+
+
+
+// Sprite yöneticisi
 mia.yukluSpriteler = {};
 mia.tanimliSpriteler = {};
 mia.spriteYoneticisi = {
@@ -348,6 +370,9 @@ mia.spriteYoneticisi = {
 						mia.spriteYoneticisi.oynat(hedefAdresi,animasyonAdi,hiz,frameNo);
 					},hiz);
 				}
+				else{
+					mia.spriteYoneticisi.goster(hedefAdresi,1,animasyon.y);
+				}
 			}
 		}
 	}
@@ -372,5 +397,13 @@ mia.spriteYoneticisi = {
 		mia.spriteYoneticisi.baslat('#oyuncu-2','right',100);
 
 	});
+
+
+	// Oynat ve hemen durdur
+	mia.spriteYoneticisi.baslat('#oyuncu_gezgin_simge_'+oyuncu_id,'hasarAl',20);
+	setTimeout(function(){
+		mia.spriteYoneticisi.durdur('#oyuncu_gezgin_simge_'+oyuncu_id);
+	},100);
+
 
 /*/
