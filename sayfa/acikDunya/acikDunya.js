@@ -182,7 +182,7 @@ mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 				konumObj.canavar_id = canavar_id;
 				konumObj.transitionDuration = mia.acikDunya.oyuncuKonumlari[key][6];
 
-				cl("Oyuncu Konum Obj:",konumObj);
+				//cl("Oyuncu Konum Obj:",konumObj);
 				mia.parcaYukle('oyuncuGezginSimge', '#acik-dunya-sahne .container', konumObj, 0, function(data){
 
 					// Parça yüklemesi bittiğinde, bu parçaya animasyonlu sprite tanımla
@@ -203,15 +203,16 @@ mia.acikDunya.canavarGezginSimgeKonumlariGuncelle = function(){
 
 		var canavarGezginSimge = document.querySelector('#canavar_gezgin_simge_'+canavar_id);
 		if(canavarGezginSimge){
-			canavarGezginSimge.style.left=mia.acikDunya.canavarKonumlari[key][1]+"px";
-			canavarGezginSimge.style.top=mia.acikDunya.canavarKonumlari[key][2]+"px";
+			var konum = mia.acikDunya.konumCoz(mia.acikDunya.canavarKonumlari[key][1], mia.acikDunya.canavarKonumlari[key][2]);
+			canavarGezginSimge.style.left=konum.x+"px";
+			canavarGezginSimge.style.top=konum.y+"px";
 		}
 		else{
-			var konumObj={
-				canavar_id:canavar_id,
-				x:mia.acikDunya.canavarKonumlari[key][1],
-				y:mia.acikDunya.canavarKonumlari[key][2]
-			}
+			var konumObj = mia.acikDunya.konumCoz(mia.acikDunya.canavarKonumlari[key][1], mia.acikDunya.canavarKonumlari[key][2]);
+			konumObj.canavar_id = canavar_id;
+
+			//cl("Canavar Konum Obj:",konumObj);
+
 			mia.parcaYukle('canavarGezginSimge', '#acik-dunya-sahne .container', konumObj);
 		}
 	}
@@ -224,16 +225,18 @@ mia.acikDunya.dusmanGezginSimgeKonumlariGuncelle = function(){
 
 		var dusmanGezginSimge = document.querySelector('#dusman_gezgin_simge_'+dusman_id);
 		if(dusmanGezginSimge){
-			dusmanGezginSimge.style.left=mia.acikDunya.dusmanKonumlari[key][4]+"px";
-			dusmanGezginSimge.style.top=mia.acikDunya.dusmanKonumlari[key][5]+"px";
+			var konum = mia.acikDunya.konumCoz(mia.acikDunya.dusmanKonumlari[key][4], mia.acikDunya.dusmanKonumlari[key][5]);
+			dusmanGezginSimge.style.left=konum.x+"px";
+			dusmanGezginSimge.style.top=konum.y+"px";
 		}
 		else{
-			var konumObj={
-				dusman_id:dusman_id,
-				tip:mia.acikDunya.dusmanKonumlari[key][1],
-				x:mia.acikDunya.dusmanKonumlari[key][2],
-				y:mia.acikDunya.dusmanKonumlari[key][3]
-			}
+			var konumObj = mia.acikDunya.konumCoz(mia.acikDunya.dusmanKonumlari[key][2], mia.acikDunya.dusmanKonumlari[key][3]);
+			konumObj.tip = mia.acikDunya.dusmanKonumlari[key][1];
+			konumObj.dusman_id = dusman_id;
+			konumObj.transitionDuration = mia.acikDunya.dusmanKonumlari[key][6];
+
+			//cl("Düşman Konum Obj:",konumObj);
+
 			mia.parcaYukle('dusmanGezginSimge', '#acik-dunya-sahne .container', konumObj);
 		}
 	}

@@ -135,6 +135,11 @@ mia.parcaYukle = function(parcaAdi,hedefAdresi,data,CB,PCB){
 			if(!PCB)PCB=0;
 			mia.parcaYerlestir(parcaAdi,hedefAdresi,data,PCB);
 		}
+		else{
+			setTimeout(function(){
+				mia.parcaYukle(parcaAdi,hedefAdresi,data,CB,PCB);
+			},1);
+		}
 	}
 	else{
 		mia.yukluParcalar[parcaAdi]="Parça yüklenemedi";
