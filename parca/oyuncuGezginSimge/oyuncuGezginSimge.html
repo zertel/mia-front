@@ -8,6 +8,28 @@
 	top: {{y}}px;
 	transition: left linear {{transitionDuration}}s, top linear {{transitionDuration}}s;
 ">
+	
+
+	<div style="
+		background-color: red;
+		position: absolute;
+		top:-23px;
+		left:-11px;
+		width: 40px;
+		height: 2px;
+		border-radius: 10px;
+		border:1px solid #fff;
+	"></div>
+	<div id="oyuncu_gezgin_simge_{{oyuncu_id}}_can_bari" style="
+		background-color: #0f0;
+		position: absolute;
+		top:-22px;
+		left:-10px;
+		width: calc( (40 / {{enYuksekCan}}) * {{kalanCan}}px );
+		height: 2px;
+		border-radius: 10px;
+	"></div>
+
 	<div id="oyuncu_gezgin_simge_{{oyuncu_id}}_hasar_x" style="
 		color: red;
 		position: absolute;

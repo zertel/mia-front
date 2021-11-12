@@ -235,18 +235,34 @@ mia.slaytYoneticisi = {
 // Ses yöneticisi
 mia.yukluSesler = {};
 mia.sesYoneticisi = {
+	ortakSesDuzeyi: 0.1,
+	kullanilabilir: 0,
 
 	yukle: function(id,dosyaAdresi,sesDuzeyi){
-		if(!sesDuzeyi)sesDuzeyi=0.5;
+		if(!sesDuzeyi)sesDuzeyi=0.4;
 		mia.yukluSesler[id] = new Audio(dosyaAdresi);
+		mia.yukluSesler[id].sesDuzeyi=sesDuzeyi;
 		mia.yukluSesler[id].volume=sesDuzeyi;
+
+		if(!mia.sesYoneticisi.kullanilabilirEvent){
+			mia.sesYoneticisi.kullanilabilirEvent=1;
+			document.body.addEventListener('click',function(){
+				mia.sesYoneticisi.kullanilabilir=1;
+			});
+			
+		}
+
 	},
 
 	oynat: function(id,baslangicZamani){
-		if(baslangicZamani){
-			mia.yukluSesler[id].currentTime = baslangicZamani;
+		if(mia.sesYoneticisi.kullanilabilir){
+			mia.yukluSesler[id].volume = mia.yukluSesler[id].sesDuzeyi * mia.sesYoneticisi.ortakSesDuzeyi;
+
+			if(baslangicZamani){
+				mia.yukluSesler[id].currentTime = baslangicZamani;
+			}
+			mia.yukluSesler[id].play();
 		}
-		mia.yukluSesler[id].play();
 	},
 
 	duraklat: function(id){
@@ -264,6 +280,7 @@ mia.sesYoneticisi = {
 
 	sesDuzeyi: function(id,sesDuzeyi){
 		if(mia.yukluSesler[id]){
+			mia.yukluSesler[id].sesDuzeyi = sesDuzeyi;
 			mia.yukluSesler[id].volume = sesDuzeyi;
 		}
 	}

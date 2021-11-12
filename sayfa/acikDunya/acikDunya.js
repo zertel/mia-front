@@ -1,4 +1,5 @@
 mia.acikDunya={};
+mia.acikDunya.oyuncular={};
 
 // acikDunya page onload function
 mia.acikDunya.yuklendiginde = function(){
@@ -148,7 +149,7 @@ mia.acikDunya.konumlariGetir = function(){
 						mia.acikDunya.dusmanSaldirdi(saldiri[i][0]);
 
 						setTimeout(function(){
-							mia.acikDunya.oyuncuHasarAldi(saldiri[i][1],saldiri[i][4]);
+							mia.acikDunya.oyuncuHasarAldi(saldiri[i][1],saldiri[i][3],saldiri[i][4]);
 						},saldiri[i][2]*1000);
 
 					}
@@ -165,9 +166,18 @@ mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 	for(var key in mia.acikDunya.oyuncuKonumlari){
 		var oyuncu_id=mia.acikDunya.oyuncuKonumlari[key][0];
 		var canavar_id=mia.acikDunya.oyuncuKonumlari[key][1];
+		mia.acikDunya.oyuncuKonumlari[key][7]=15; // enYuksekCan
+		mia.acikDunya.oyuncuKonumlari[key][8]=15; // kalanCan
 
-		if(!mia.acikDunya.oyuncuKonumlari[key][7]){
-			mia.acikDunya.oyuncuKonumlari[key][7]=1;
+
+		mia.acikDunya.oyuncular[oyuncu_id]={
+			canavar_id: mia.acikDunya.oyuncuKonumlari[key][1],
+			enYuksekCan: mia.acikDunya.oyuncuKonumlari[key][7],
+			kalanCan: mia.acikDunya.oyuncuKonumlari[key][8]
+		};
+
+		if(!mia.acikDunya.oyuncuKonumlari[key][100]){
+			mia.acikDunya.oyuncuKonumlari[key][100]=1;
 
 			var oyuncuGezginSimge = document.querySelector('#oyuncu_gezgin_simge_'+oyuncu_id);
 			if(oyuncuGezginSimge){
@@ -181,6 +191,9 @@ mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 				konumObj.oyuncu_id = oyuncu_id;
 				konumObj.canavar_id = canavar_id;
 				konumObj.transitionDuration = mia.acikDunya.oyuncuKonumlari[key][6];
+
+				konumObj.enYuksekCan = mia.acikDunya.oyuncuKonumlari[key][7];
+				konumObj.kalanCan = mia.acikDunya.oyuncuKonumlari[key][8];
 
 				//cl("Oyuncu Konum Obj:",konumObj);
 				mia.parcaYukle('oyuncuGezginSimge', '#acik-dunya-sahne .container', konumObj, 0, function(data){
@@ -490,7 +503,7 @@ mia.acikDunya.dusmanSaldirdi = function(dusman_id){
 	}
 }
 
-mia.acikDunya.oyuncuHasarAldi = function(oyuncu_id,saldiriTipi){
+mia.acikDunya.oyuncuHasarAldi = function(oyuncu_id,alinanHasar,saldiriTipi){
 	if(!oyuncu_id && mia.oturum && mia.oturum.durum){
 		oyuncu_id = mia.oturum.hesap.id;
 	}
@@ -550,6 +563,12 @@ mia.acikDunya.oyuncuHasarAldi = function(oyuncu_id,saldiriTipi){
 					if(oyuncuGezginSimgeHasarX2){
 						oyuncuGezginSimgeHasarX2.style.display="block";
 					}
+
+					mia.acikDunya.oyuncular[oyuncu_id].kalanCan-=alinanHasar;
+
+					document.getElementById('oyuncu_gezgin_simge_'+oyuncu_id+'_can_bari').style.width=
+						(40 / mia.acikDunya.oyuncular[oyuncu_id].enYuksekCan * mia.acikDunya.oyuncular[oyuncu_id].kalanCan)+"px";
+
 					setTimeout(function(){
 						if(oyuncuGezginSimgeHasarX2){
 							oyuncuGezginSimgeHasarX2.style.display="none";
