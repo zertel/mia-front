@@ -74,13 +74,17 @@ body{
 
 
 #acik-dunya-sahne .alt-panel{
-	/* background-color: rgba(0,0,0,0.5); */
 	color: white;
 	position: fixed;
 	right: 0;
 	bottom: 0;
 	left:0;
-	padding: 2em 2em 4em 2em;
+	padding: 2em 2em 2em 2em;
+	z-index: 100;
+	transition: background-color 0.3s;
+}
+#acik-dunya-sahne .alt-panel:hover{
+	background-color: rgba(0,0,0,0.2);
 }
 
 #acik-dunya-sahne .acik-dunya-butonlar{

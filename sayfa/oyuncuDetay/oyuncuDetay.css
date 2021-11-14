@@ -1,0 +1,154 @@
+#oyuncu-detay-sahne > .container{
+	text-align: center;
+	background-image: url(img/bg.jpg);
+	background-size: cover;
+
+}
+
+
+#oyuncu-detay-sahne .ust-panel{
+	padding-top: 4em;
+}
+
+#oyuncu-detay-sahne .ust-panel .oyuncu-detay-baslik{
+	color: white;
+	font-size: 50pt;
+	font-family: arial;
+	text-shadow: 3px 3px #000;
+}
+
+
+
+#oyuncu-detay-sahne .orta-panel{
+	margin: 0;
+	position: absolute;
+	top: 25%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	left: 50%;
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+#oyuncu-detay-form input{
+	transition: background-color 1s;
+	background-color: rgba(0,0,0,0.5);
+	color: #ccc;
+	font-size: 20pt;
+	padding: 0.4em;
+	margin: 0.2em;
+	border-radius: 3px;
+	border:1px solid #666;
+}
+#oyuncu-detay-form input:focus{
+	color: #fff;
+	background-color: rgba(50,50,50,0.5);
+}
+
+
+
+
+#oyuncu-detay-sahne .alt-panel{
+	/* background-color: rgba(0,0,0,0.5); */
+	color: white;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left:0;
+	padding: 2em 2em 4em 2em;
+}
+
+#oyuncu-detay-sahne .oyuncu-detay-butonlar{
+	text-align: right;
+	padding-right: 3em;
+}
+
+#oyuncu-detay-sahne .oyuncu-detay-btn{
+	display: inline-block;
+	vertical-align: top;
+	background-color: #f1f2f6;
+	color: #ccc;
+	width: 100px;
+	height: 100px;
+	border-radius: 40px;	
+	margin: 0em;
+	border:1px solid #666;
+}
+#oyuncu-detay-sahne .oyuncu-detay-btn:hover{
+	color: #fff;
+	background-color: #fff;
+}
+
+#oyuncu-detay-sahne .btn-anasayfa:hover svg{
+	fill:#B33771;
+}
+
+#oyuncu-detay-sahne .btn-kapat{
+	width: 54px;
+	height: 54px;
+	border-radius: 24px;
+	font-size: 32px;
+	color:#6D214F;
+}
+#oyuncu-detay-sahne .btn-kapat:hover{
+	color:black;
+}
+
+#oyuncu-detay-sahne .btn-canavarlarim{
+	background-size: cover;
+}
+
+#oyuncu-detay-sahne .btn-canavarlarim:hover{
+	opacity: 0.8;
+}
+
+#oyuncu-detay-sahne .btn-acik-dunya{
+	background-image: url(img/acik-dunya-btn.jpg);
+	background-size: cover;
+}
+
+#oyuncu-detay-sahne .btn-acik-dunya:hover{
+	opacity: 0.8;
+}
+
+
+#oyuncu-detay-sahne .btn-cikis{
+	color: red;
+	font-size: 24px;
+	width:50px;
+	height:50px;
+	border-radius: 20px;
+	vertical-align: bottom;
+}
+
+
+#oyuncu-detay-sahne #oyuncu-detay-panel{
+	background-color: #effafc;
+	margin: auto;
+	padding: 2em;
+	border-radius: 4em;
+	max-width: 864px;
+}
+
+#oyuncu-detay-sahne #oyuncu-detay-panel .oyuncu-avatar{
+	text-align: left;
+}
+#oyuncu-detay-sahne #oyuncu-detay-panel .oyuncu-avatar img{
+	border-radius: 55px;
+}
+
+#oyuncu-detay-sahne #oyuncu-detay-panel .oyuncu-bilgi ul{
+	list-style: none;
+}
+#oyuncu-detay-sahne #oyuncu-detay-panel .oyuncu-bilgi ul li{
+	text-align: left;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#oyuncu-detay-sahne #oyuncu-detay-panel .oyuncu-bilgi ul li span:first-child{
+	display: inline-block;
+	width: 140px;
+	text-align: right;
+	padding-right: 0.4em;
+}

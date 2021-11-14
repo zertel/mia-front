@@ -250,24 +250,29 @@ mia.acikDunya.dusmanGezginSimgeKonumlariGuncelle = function(){
 			};
 		}
 
-		var dusmanGezginSimge = document.querySelector('#dusman_gezgin_simge_'+dusman_id);
-		if(dusmanGezginSimge){
-			var konum = mia.acikDunya.konumCoz(mia.acikDunya.dusmanKonumlari[key][4], mia.acikDunya.dusmanKonumlari[key][5]);
-			dusmanGezginSimge.style.left=konum.x+"px";
-			dusmanGezginSimge.style.top=konum.y+"px";
+		if(mia.acikDunya.dusmanlar[dusman_id].kalanCan>0){
+			var dusmanGezginSimge = document.querySelector('#dusman_gezgin_simge_'+dusman_id);
+			if(dusmanGezginSimge){
+				var konum = mia.acikDunya.konumCoz(mia.acikDunya.dusmanKonumlari[key][4], mia.acikDunya.dusmanKonumlari[key][5]);
+				dusmanGezginSimge.style.left=konum.x+"px";
+				dusmanGezginSimge.style.top=konum.y+"px";
+			}
+			else{
+				var konumObj = mia.acikDunya.konumCoz(mia.acikDunya.dusmanKonumlari[key][2], mia.acikDunya.dusmanKonumlari[key][3]);
+				konumObj.tip = mia.acikDunya.dusmanKonumlari[key][1];
+				konumObj.dusman_id = dusman_id;
+				konumObj.transitionDuration = mia.acikDunya.dusmanKonumlari[key][6];
+
+				konumObj.enYuksekCan = mia.acikDunya.dusmanKonumlari[key][7];
+				konumObj.kalanCan = mia.acikDunya.dusmanKonumlari[key][8];
+
+				//cl("Düşman Konum Obj:",konumObj);
+
+				mia.parcaYukle('dusmanGezginSimge', '#acik-dunya-sahne .container', konumObj);
+			}
 		}
 		else{
-			var konumObj = mia.acikDunya.konumCoz(mia.acikDunya.dusmanKonumlari[key][2], mia.acikDunya.dusmanKonumlari[key][3]);
-			konumObj.tip = mia.acikDunya.dusmanKonumlari[key][1];
-			konumObj.dusman_id = dusman_id;
-			konumObj.transitionDuration = mia.acikDunya.dusmanKonumlari[key][6];
-
-			konumObj.enYuksekCan = mia.acikDunya.dusmanKonumlari[key][7];
-			konumObj.kalanCan = mia.acikDunya.dusmanKonumlari[key][8];
-
-			//cl("Düşman Konum Obj:",konumObj);
-
-			mia.parcaYukle('dusmanGezginSimge', '#acik-dunya-sahne .container', konumObj);
+			cl(dusman_id+" idli düşmanın canı kalmamış");
 		}
 	}
 };
@@ -459,8 +464,16 @@ mia.acikDunya.dusmanaSaldir = function(dusman_id){
 					mia.acikDunya.dusmanlar[dusman_id].kalanCan-=donenCevapJson.cevap.saldiri.verilenHasar;
 
 					mia.sesYoneticisi.oynat('hasarAlmaEfektSesi',0.2);
-					document.getElementById('dusman_gezgin_simge_'+dusman_id+'_can_bari').style.width=
+					if(mia.acikDunya.dusmanlar[dusman_id].kalanCan <= 0){
+						var silinecekDusman=document.getElementById('dusman_gezgin_simge_'+dusman_id);
+						if(silinecekDusman){
+							silinecekDusman.remove();
+						}
+					}
+					else{
+						document.getElementById('dusman_gezgin_simge_'+dusman_id+'_can_bari').style.width=
 						(54 / mia.acikDunya.dusmanlar[dusman_id].enYuksekCan * mia.acikDunya.dusmanlar[dusman_id].kalanCan)+"px";
+					}
 				}
 				else{
 					alert(donenCevapJson.mesaj);

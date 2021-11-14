@@ -315,7 +315,7 @@ mia.panel = {
 		// Eğer yok ise pencereyi oluştur (create html elements)
 		if(!document.getElementById('panel-'+panelId)){
 			document.body.insertAdjacentHTML("beforeend", '\
-				<div class="panel" id="panel-' + panelId + '" style="display:block; width:'+ayarlar.width+'; height:'+ayarlar.height+';">\
+				<div class="panel" id="panel-' + panelId + '" style="display:block; width:'+ayarlar.width+'; height:'+ayarlar.height+';z-index:101;">\
 					<div style="position:fixed;top:0;right:0;bottom:'+ayarlar.height+';left:0;" onclick="mia.panel.kapat(\'' + panelId + '\')">&nbsp;</div>\
 					<div class="panel-icerik">\
 						<h3 style="color:#fff; text-align:center;">Yükleniyor...</h3>\
