@@ -203,7 +203,8 @@ mia.oturum = {
 		//kullaniciAdi: "zertel",
 		//eposta: "mail@zertel.net",
 		//ad: "Orhan",
-		//soyad: "TUTUM"
+		//soyad: "TUTUM",
+		//sahne_id: 1
 	},
 
 	giris: function(oturumJson){
@@ -240,6 +241,7 @@ mia.oturum = {
 			if(lsMiaOturum.durum==1){
 				mia.oturum.durum=lsMiaOturum.durum;
 				mia.oturum.hesap=lsMiaOturum.hesap;
+				mia.oturum.hesap.sahne_id=1;
 			}
 		}
 	}

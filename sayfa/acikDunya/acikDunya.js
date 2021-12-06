@@ -1,4 +1,5 @@
 mia.acikDunya={
+	aktifSayfaId:1,
 	oyuncular:{},
 	dusmanlar:{},
 	oyuncuCanBariCarpani:40,
@@ -8,7 +9,8 @@ mia.acikDunya={
 // acikDunya page onload function
 mia.acikDunya.yuklendiginde = function(){
 	cl("acikDunya.yuklendiginde() fonksiyonu çalıştı");
-
+	mia.acikDunya.aktifSayfaId=mia.oturum.hesap.sahne_id;
+	
 	// Oyuncu spritesini önceden yüklemeyi başlat
 	mia.spriteYoneticisi.yukle('cibiliMons','sayfa/acikDunya/img/cibili-mons-60x20.png',{
 		genislik: 20,
@@ -124,7 +126,7 @@ mia.acikDunya.konumlariGetir = function(){
 	}
 
 	// api üzerinden oyuncu konumlarını getir
-	ajaxGet(mia.global.apiHost+'/sahne/konumlariGetir/1'+
+	ajaxGet(mia.global.apiHost+'/sahne/konumlariGetir/'+mia.acikDunya.aktifSayfaId+
 		(mia.acikDunya.sonIstekZamani ? '/' + mia.acikDunya.sonIstekZamani : '')
 		,function(donenCevap){
 
@@ -135,6 +137,8 @@ mia.acikDunya.konumlariGetir = function(){
 			var donenCevapJson = JSON.parse(donenCevap);
 
 			if(donenCevapJson.sonuc == 1){
+				document.querySelector('#acik-dunya-sahne > .container').style.backgroundImage="url('sayfa/acikDunya/img/sahne/"+mia.acikDunya.aktifSayfaId+".jpg')";
+
 				mia.acikDunya.sonIstekZamani = donenCevapJson.cevap.sonIstekZamani;
 
 				// objeye dönüşmüş oyuncuKonumlari verisini RAM'a (mia.acikDunya objemizin içine) yükle
@@ -315,6 +319,34 @@ mia.acikDunya.hedefeGit = function(x,y){
 
 							// Gezinti bittiyse sprite animasyonu durdur
 							mia.spriteYoneticisi.durdur('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id,'yürü');
+
+							var sahneYon="";
+							if(y<=0){
+								sahneYon='ust';
+							}
+							else if(x>=1000){
+								sahneYon='sag';
+							}
+							else if(y>=1000){
+								sahneYon='alt';
+							}
+							else if(x<=0){
+								sahneYon='sol';
+							}
+
+							if(sahneYon){
+								ajaxGet(mia.global.apiHost+'/sahne/sonrakiHarita/'+sahneYon, function(donenCevap2){
+									var donenCevap2Json = JSON.parse(donenCevap2);
+									if(donenCevap2Json.sonuc == 1){
+										cl("sonrakiHarita/sag:",donenCevap2Json);
+										if(donenCevap2Json.cevap.id){
+											mia.acikDunya.aktifSayfaId=donenCevap2Json.cevap.id;
+											mia.oturum.hesap.sahne_id=donenCevap2Json.cevap.id;
+											mia.sayfaYukle('acikDunya');
+										}
+									}
+								});
+							}
 						
 						},donenCevapJson.cevap[0].hedefeKalanSure*1000);
 
