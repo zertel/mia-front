@@ -547,6 +547,27 @@ mia.acikDunya.dusmanaSaldir = function(dusman_id){
 
 }
 
+mia.acikDunya.dusmanButonGoster = function(dusman_id){
+	var dsply = document.getElementById('dusman_gezgin_simge_'+dusman_id+'_butonlar').style.display == 'none' ? 0 : 1;
+	mia.animasyon('#dusman_gezgin_simge_'+dusman_id+'_butonlar',{
+		'display':(dsply ? ['block','none',0.5] : 'block') 
+	});
+	mia.animasyon('#dusman_gezgin_simge_'+dusman_id+'_butonlar button:first-child',{
+		'width':(dsply ? [50,10,0.5] : [10,50,0.5]), 
+		'height':(dsply ? [50,10,0.5] : [10,50,0.5]),
+		'left':(dsply ? [-30,25,0.5] : [25,-30,0.5]),
+		'top':(dsply ? [50,20,0.5] : [20,50,0.5]),
+		'opacity':(dsply ? [1,0,0.5] : [0,1,1])
+	});
+	mia.animasyon('#dusman_gezgin_simge_'+dusman_id+'_butonlar button:last-child',{
+		'width':(dsply ? [50,10,0.5] : [10,50,0.5]), 
+		'height':(dsply ? [50,10,0.5] : [10,50,0.5]),
+		'right':(dsply ? [-30,25,0.5] : [25,-30,0.5]),
+		'top':(dsply ? [50,20,0.5] : [20,50,0.5]),
+		'opacity':(dsply ? [1,0,0.5] : [0,1,1])
+	})
+}
+
 
 
 

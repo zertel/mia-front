@@ -1,13 +1,5 @@
 <div id="dusman_gezgin_simge_{{dusman_id}}" 
 
-	onclick="
-		mia.pencere.ac('dusman-detay',{
-			parcaAdi:'dusmanDetay',
-			parcaApiUrl: 'http://localhost:83/dusman/detay/{{dusman_id}}',
-			width: '500px',
-			height: '500px'
-		})" 
-
 	style="
 		width: 50px;
 		height: 50px;
@@ -25,6 +17,17 @@
 		transition: left 2s, top 2s;
 		cursor: pointer;
 	">
+
+	<span 
+	onclick="mia.acikDunya.dusmanButonGoster('{{dusman_id}}')" 
+	style="
+		position: absolute;
+		top:0;
+		right: 0;
+		bottom: 0px;
+		left: 0px;
+		"></span>
+
 	<div style="
 		background-color: yellow;
 		position: absolute;
@@ -56,6 +59,7 @@
 		"
 	>⚡ϟ</span>
 
+
 	<div id="dusman_gezgin_simge_{{dusman_id}}_saldiri_x" style="
 		color: white;
 		position: absolute;
@@ -71,4 +75,45 @@
 		display: none;
 		font-size: 32px;
 	">🗲</div>
+
+	<div id="dusman_gezgin_simge_{{dusman_id}}_butonlar" style="
+		display: none;
+		background-color: red;
+		">
+		<button type="button" style="
+			background-color: white;
+			border:0;
+			border-radius: 100px;
+			background-image: url(monster/4.png);
+			background-size: 80%;
+			background-repeat: no-repeat;
+			background-position: center;
+			position: absolute; 
+			top: 60px;
+			left: -30px;
+			"
+			onclick="
+				mia.acikDunya.dusmanaSaldir('{{dusman_id}}')
+			"></button>
+		<button type="button" style="
+			background-color: white;
+			border:0;
+			border-radius: 100px;
+			background-image: url(monster/5.png);
+			background-size: 80%;
+			background-repeat: no-repeat;
+			background-position: center;
+			position: absolute; 
+			top: 60px;
+			right: -30px;
+			"
+			onclick="
+				mia.pencere.ac('dusman-detay',{
+					parcaAdi:'dusmanDetay',
+					parcaApiUrl: 'http://localhost:83/dusman/detay/{{dusman_id}}',
+					width: '500px',
+					height: '500px'
+				})
+			"></button>
+	</div>
 </div>

@@ -363,3 +363,53 @@ mia.panel = {
 		document.querySelector('#panel-' + panelId).remove();
 	},
 };
+
+
+mia.animasyon = function(hedefAdresi, ayarlar){
+	var element = document.querySelector(hedefAdresi);
+	if(element && ayarlar){
+
+		var ek = {'width':'px','height':'px','top':'px','right':'px','bottom':'px','left':'px'};
+
+		element.style.transition = '';
+		for(i in ayarlar){
+			switch( typeof(ayarlar[i]) ){
+				case "object":
+					var baslangicDegeri = ayarlar[i][0]; 
+					var sure = ayarlar[i][2];
+
+					if(i != 'display'){
+						element.style.transitionProperty += (element.style.transitionProperty?',':'') + i;
+						element.style.transitionDuration += (element.style.transitionDuration?',':'') + sure + "s";
+						element.style[i] = baslangicDegeri + (ek[i] ? ek[i] : '');
+					}
+					break;
+				case "string":
+					element.style[i] = ayarlar[i] + (ek[i] ? ek[i] : '');
+					break;
+			}
+		}
+
+		setTimeout(function(){
+			for(i in ayarlar){
+				switch( typeof(ayarlar[i]) ){
+					case "object":
+						if(i != 'display'){
+							var bitisDegeri = ayarlar[i][1];
+							element.style[i] = bitisDegeri + (ek[i] ? ek[i] : '');
+						}
+						break;
+				}
+			}
+		},1);
+
+		if(ayarlar['display'] && typeof(ayarlar['display']) == 'object'){
+			var sure = ayarlar['display'][2];
+			var bitisDegeri = ayarlar['display'][1];
+			setTimeout(function(){
+				element.style['display'] = bitisDegeri;
+			},sure*1000);
+		}
+
+	}
+}
