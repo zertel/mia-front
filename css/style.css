@@ -82,7 +82,7 @@ main .yukleniyor{
 
 .pencere{
 	display: none;
-	position: absolute;
+	position: fixed;
 
 	top: 10%;
 	-ms-transform: translateY(-50%);

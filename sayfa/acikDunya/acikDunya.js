@@ -18,7 +18,8 @@ mia.acikDunya.yuklendiginde = function(){
 		hiz: 50,
 		animasyon: {
 			yürü:{x:1, y:1, son:3},
-			hasarAl:{x:1, y:1, son:2}
+			hasarAl:{x:1, y:1, son:2},
+			kilicDarbesi:{x:1, y:1, son:2}
 		}
 	});
 	
@@ -26,6 +27,8 @@ mia.acikDunya.yuklendiginde = function(){
 	mia.sesYoneticisi.yukle('hasarAlmaEfektSesi','sayfa/acikDunya/mp3/hasar-alma-efekt-sesi.mp3',0.2);
 	mia.sesYoneticisi.yukle('yildirimDusmeSesi','sayfa/acikDunya/mp3/yildirim-dusme-efekt-sesi.mp3',0.1);
 	mia.sesYoneticisi.yukle('elektrikSesi','sayfa/acikDunya/mp3/elektrik-efekt-sesi.mp3',0.1);
+	mia.sesYoneticisi.yukle('kilicSesi1','sayfa/acikDunya/mp3/kilic-darbe-efekt-sesi-1.mp3',0.5);
+	mia.sesYoneticisi.yukle('kilicSesi2','sayfa/acikDunya/mp3/kilic-darbe-efekt-sesi-2.mp3',0.5);
 
 	
 
@@ -485,6 +488,7 @@ mia.acikDunya.dusmanaSaldir = function(dusman_id){
 		var b = oy - dy;
 		var c = Math.sqrt( a*a + b*b );
 		if(c<100){
+			var oyuncu_id = mia.oturum.hesap.id;
 
 			if(dusman_id){
 				mia.acikDunya.seciliDusman = dusman_id;
@@ -499,8 +503,40 @@ mia.acikDunya.dusmanaSaldir = function(dusman_id){
 			}
 
 			if(dusman_id && canavar_id){
+				mia.sesYoneticisi.oynat('kilicSesi1');
+				mia.spriteYoneticisi.baslat('#oyuncu_gezgin_simge_'+oyuncu_id,'kilicDarbesi',100);
+				
 				// api get isteği ile düşmana saldırı gerçekleştir
 				ajaxGet(mia.global.apiHost+'/dusman/saldir/'+canavar_id+'/'+dusman_id, function(donenCevap){
+					mia.sesYoneticisi.oynat('kilicSesi2');
+
+
+					var dgsid = '#dusman_gezgin_simge_' + dusman_id + '';
+					mia.animasyon(dgsid,{
+						'width':[50,47,0], 
+						'height':[50,47,0], 
+						'opacity':[1,0.6,0.1]
+					});
+					setTimeout(function(){
+						mia.spriteYoneticisi.durdur('#oyuncu_gezgin_simge_'+oyuncu_id);
+
+						mia.animasyon(dgsid,{
+							'width':[47,50,0], 
+							'height':[47,50,0],
+							'opacity':[0.6,1,0.1]
+						});
+						setTimeout(function(){
+							mia.animasyon(dgsid,{
+								'opacity':[1,0.6,0.1]
+							});
+							setTimeout(function(){
+								mia.animasyon(dgsid,{
+									'opacity':[0.6,1,0.1]
+								});
+							},101);
+						},101);
+					},101);
+
 
 					if(donenCevap){
 						cl("dusman/saldir apisi çalıştı: (URL "+mia.global.apiHost+'/dusman/saldir/'+canavar_id+'/'+dusman_id+")");
@@ -514,7 +550,7 @@ mia.acikDunya.dusmanaSaldir = function(dusman_id){
 
 							mia.acikDunya.dusmanlar[dusman_id].kalanCan-=donenCevapJson.cevap.saldiri.verilenHasar;
 
-							mia.sesYoneticisi.oynat('hasarAlmaEfektSesi',0.2);
+							//mia.sesYoneticisi.oynat('hasarAlmaEfektSesi',0.2);
 							if(mia.acikDunya.dusmanlar[dusman_id].kalanCan <= 0){
 								var silinecekDusman=document.getElementById('dusman_gezgin_simge_'+dusman_id);
 								if(silinecekDusman){
@@ -721,5 +757,4 @@ mia.acikDunya.dusmanHasarYansit = function(dusman_id){
 	if(dusmanKalanCanSpan){
 		dusmanKalanCanSpan.innerHTML=mia.acikDunya.dusmanlar[dusman_id].kalanCan;
 	}
-	
 };
