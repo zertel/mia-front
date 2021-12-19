@@ -7,7 +7,7 @@
 		</div>
 		
 		<div class="orta-panel">
-			<form action="http://localhost:83/hesap/giris" id="uyelik-girisi-form" method="POST" 
+			<form action="{{apiHost}}/hesap/giris" id="uyelik-girisi-form" method="POST" 
 				onsubmit="return mia.uyelikGirisi.gonder()">
 				<div>
 					<input type="text" name="eposta" autocomplete="off" placeholder="Kullanıcı adınız ya da e-posta adresiniz" class="uyelik-girisi-input">

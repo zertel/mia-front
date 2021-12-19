@@ -4,7 +4,8 @@ mia.yukluSayfalar={};
 
 //Çekirdek ayarlar
 mia.global={
-	apiHost: 'http://localhost:83'
+	apiHost: apiHost,
+	monsterImageHost: monsterImageHost,
 };
 
 // Ufak Yardımcı Fonksiyonlar
@@ -57,13 +58,19 @@ function ajaxPostGonder(formId,CB){
 
 
 // Ajax get yardımı ile seçili sayfayı yükler ve ekrandaki main etiketinin içine basar
-mia.sayfaYukle = function(sayfaAdi,parametre){
+mia.sayfaYukle = function(sayfaAdi,parametre,data){
 	if(parametre){
 		window.location.hash=parametre;
 	}
 	
 	document.body.style.opacity=0;
 	ajaxGet('sayfa/'+sayfaAdi+'/'+sayfaAdi+'.html', function(donenCevap){ 
+
+		if(data){
+			for(key in data){
+				donenCevap = donenCevap.replace(new RegExp('{{'+key+'}}', "g"),data[key]);
+			}
+		}
 
 		// Ajax sonucu dönen cevabı main etiketinin içine yapıştır
 		document.querySelector('main').innerHTML = donenCevap;
@@ -189,6 +196,7 @@ mia.parcaCokluYukle = function(parcaAdi,hedefAdresi,data,CB,PCB){
 mia.parcaCokluYerlestir = function(parcaAdi,hedefAdresi,data,CB){
 	if(data && mia.yukluParcalar[parcaAdi]){
 		for(i in data){
+			data[i].monsterImageHost = mia.global.monsterImageHost;
 			mia.parcaYerlestir(parcaAdi,hedefAdresi,data[i],CB);
 		}
 	}
@@ -280,6 +288,9 @@ mia.pencere = {
 					var donenCevapJson = JSON.parse(donenCevap);
 
 					if(donenCevapJson.sonuc == 1){
+
+						donenCevapJson.cevap.apiHost = mia.global.apiHost;
+						donenCevapJson.cevap.monsterImageHost = mia.global.monsterImageHost;
 						
 						mia.parcaYukle(ayarlar.parcaAdi,'#pencere-' + pencereId + " .pencere-icerik", donenCevapJson.cevap, function(){ 
 							document.querySelector('#pencere-' + pencereId + " .pencere-icerik").innerHTML=ayarlar.icerik;

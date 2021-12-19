@@ -177,13 +177,16 @@ mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 	for(var key in mia.acikDunya.oyuncuKonumlari){
 		var oyuncu_id=mia.acikDunya.oyuncuKonumlari[key][0];
 		var canavar_id=mia.acikDunya.oyuncuKonumlari[key][1];
+		
+		//mia.acikDunya.oyuncuKonumlari[key][9]=oyuncu_id==1 ? 1 : 0;
 
 		mia.acikDunya.oyuncular[oyuncu_id]={
 			x: mia.acikDunya.oyuncuKonumlari[key][4],
 			y: mia.acikDunya.oyuncuKonumlari[key][5],
 			canavar_id: mia.acikDunya.oyuncuKonumlari[key][1],
 			enYuksekCan: mia.acikDunya.oyuncuKonumlari[key][7],
-			kalanCan: mia.acikDunya.oyuncuKonumlari[key][8]
+			kalanCan: mia.acikDunya.oyuncuKonumlari[key][8],
+			baygin: mia.acikDunya.oyuncuKonumlari[key][9]
 		};
 
 		if(!mia.acikDunya.oyuncuKonumlari[key][100]){
@@ -194,6 +197,10 @@ mia.acikDunya.oyuncuGezginSimgeKonumlariGuncelle = function(){
 				var konum = mia.acikDunya.konumCoz(mia.acikDunya.oyuncuKonumlari[key][4], mia.acikDunya.oyuncuKonumlari[key][5]);
 				oyuncuGezginSimge.style.left=konum.x+"px";
 				oyuncuGezginSimge.style.top=konum.y+"px";
+
+				if(mia.acikDunya.oyuncuKonumlari[key][9]){
+					document.getElementById('oyuncu_gezgin_simge_'+oyuncu_id+'_baygin').style.display="block";
+				}
 				
 				mia.acikDunya.oyuncuHasarYansit(oyuncu_id);
 			}
@@ -239,6 +246,8 @@ mia.acikDunya.canavarGezginSimgeKonumlariGuncelle = function(){
 			konumObj.canavar_id = canavar_id;
 
 			//cl("Canavar Konum Obj:",konumObj);
+			konumObj.apiHost = mia.global.apiHost;
+			konumObj.monsterImageHost = mia.global.monsterImageHost;
 
 			mia.parcaYukle('canavarGezginSimge', '#acik-dunya-sahne .container', konumObj);
 		}
@@ -276,6 +285,8 @@ mia.acikDunya.dusmanGezginSimgeKonumlariGuncelle = function(){
 				konumObj.enYuksekCan = mia.acikDunya.dusmanKonumlari[key][7];
 				konumObj.kalanCan = mia.acikDunya.dusmanKonumlari[key][8];
 
+				konumObj.apiHost = mia.global.apiHost;
+
 				//cl("Düşman Konum Obj:",konumObj);
 
 				mia.parcaYukle('dusmanGezginSimge', '#acik-dunya-sahne .container', konumObj, 0, function(data){
@@ -294,71 +305,77 @@ mia.acikDunya.dusmanGezginSimgeKonumlariGuncelle = function(){
 
 
 mia.acikDunya.hedefeGit = function(x,y){
+	var baygin = mia.acikDunya.oyuncular[mia.oturum.hesap.id].baygin;
 
-	// api get isteği ile konumu değiştir
-	ajaxGet(mia.global.apiHost+'/sahne/hedefeGit/'+x+'/'+y, function(donenCevap){
+	if(!baygin){
+		// api get isteği ile konumu değiştir
+		ajaxGet(mia.global.apiHost+'/sahne/hedefeGit/'+x+'/'+y, function(donenCevap){
 
-		if(donenCevap){
-			cl("hedefeGit apisi çalıştı: (URL "+mia.global.apiHost+'/sahne/hedefeGit/'+x+'/'+y+"')");
+			if(donenCevap){
+				cl("hedefeGit apisi çalıştı: (URL "+mia.global.apiHost+'/sahne/hedefeGit/'+x+'/'+y+"')");
 
-			// text yığını olarak dönen json verisini parçala ve objeye dönüştür 
-			var donenCevapJson = JSON.parse(donenCevap);
+				// text yığını olarak dönen json verisini parçala ve objeye dönüştür 
+				var donenCevapJson = JSON.parse(donenCevap);
 
-			if(donenCevapJson.sonuc == 1){
-				cl("hedefeGit:",donenCevapJson);
-				
-				if(donenCevapJson.cevap[0] && donenCevapJson.cevap[0].oyuncu_id){
+				if(donenCevapJson.sonuc == 1){
+					cl("hedefeGit:",donenCevapJson);
+					
+					if(donenCevapJson.cevap[0] && donenCevapJson.cevap[0].oyuncu_id){
 
-					// Gezinti başladıysa, tanımlı sprite animasyonu başlat
-					mia.spriteYoneticisi.baslat('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id,'yürü',100);
+						// Gezinti başladıysa, tanımlı sprite animasyonu başlat
+						mia.spriteYoneticisi.baslat('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id,'yürü',100);
 
-					var oyuncuGezginSimge = document.querySelector('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id);
-					if(oyuncuGezginSimge){
-						oyuncuGezginSimge.style.transitionDuration = 
-							donenCevapJson.cevap[0].hedefeKalanSure+"s, "+
-							donenCevapJson.cevap[0].hedefeKalanSure+"s";
+						var oyuncuGezginSimge = document.querySelector('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id);
+						if(oyuncuGezginSimge){
+							oyuncuGezginSimge.style.transitionDuration = 
+								donenCevapJson.cevap[0].hedefeKalanSure+"s, "+
+								donenCevapJson.cevap[0].hedefeKalanSure+"s";
 
-						setTimeout(function(){
+							setTimeout(function(){
 
-							// Gezinti bittiyse sprite animasyonu durdur
-							mia.spriteYoneticisi.durdur('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id,'yürü');
+								// Gezinti bittiyse sprite animasyonu durdur
+								mia.spriteYoneticisi.durdur('#oyuncu_gezgin_simge_'+donenCevapJson.cevap[0].oyuncu_id,'yürü');
 
-							var sahneYon="";
-							if(y<=0){
-								sahneYon='ust';
-							}
-							else if(x>=1000){
-								sahneYon='sag';
-							}
-							else if(y>=1000){
-								sahneYon='alt';
-							}
-							else if(x<=0){
-								sahneYon='sol';
-							}
+								var sahneYon="";
+								if(y<=0){
+									sahneYon='ust';
+								}
+								else if(x>=1000){
+									sahneYon='sag';
+								}
+								else if(y>=1000){
+									sahneYon='alt';
+								}
+								else if(x<=0){
+									sahneYon='sol';
+								}
 
-							if(sahneYon){
-								ajaxGet(mia.global.apiHost+'/sahne/sonrakiHarita/'+sahneYon, function(donenCevap2){
-									var donenCevap2Json = JSON.parse(donenCevap2);
-									if(donenCevap2Json.sonuc == 1){
-										cl("sonrakiHarita/sag:",donenCevap2Json);
-										if(donenCevap2Json.cevap.id){
-											mia.acikDunya.aktifSayfaId=donenCevap2Json.cevap.id;
-											mia.oturum.hesap.sahne_id=donenCevap2Json.cevap.id;
-											mia.sayfaYukle('acikDunya');
+								if(sahneYon){
+									ajaxGet(mia.global.apiHost+'/sahne/sonrakiHarita/'+sahneYon, function(donenCevap2){
+										var donenCevap2Json = JSON.parse(donenCevap2);
+										if(donenCevap2Json.sonuc == 1){
+											cl("sonrakiHarita/sag:",donenCevap2Json);
+											if(donenCevap2Json.cevap.id){
+												mia.acikDunya.aktifSayfaId=donenCevap2Json.cevap.id;
+												mia.oturum.hesap.sahne_id=donenCevap2Json.cevap.id;
+												mia.sayfaYukle('acikDunya');
+											}
 										}
-									}
-								});
-							}
-						
-						},donenCevapJson.cevap[0].hedefeKalanSure*1000);
+									});
+								}
+							
+							},donenCevapJson.cevap[0].hedefeKalanSure*1000);
 
+						}
 					}
 				}
 			}
-		}
-		
-	});
+			
+		});
+	}
+	else{
+		alert("Seçili canavar baygın olduğu için hareket edemez.");
+	}
 }
 
 
@@ -447,7 +464,7 @@ mia.acikDunya.canavarDetayDiyalogYukle = function(canavar,diyalog_id){
 mia.acikDunya.canavarSecimPencerisiAc = function(){
 	mia.panel.ac('canavar-sec',{
 		parcaAdi:'canavarSecimKarti',
-		parcaApiUrl: 'http://localhost:83/hesap/canavarlarim/00/100',
+		parcaApiUrl: mia.global.apiHost + '/hesap/canavarlarim/00/100',
 		cokluParca: 1,
 		height: '260px'
 	});

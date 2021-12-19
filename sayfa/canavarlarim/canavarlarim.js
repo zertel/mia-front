@@ -13,9 +13,9 @@ mia.canavarlarim.yuklendiginde = function(){
 mia.canavarlarim.yukle = function(){
 
 	// istenen adet aralığındaki canavarları api üzerinden getir
-	ajaxGet('http://localhost:83/hesap/canavarlarim/' + ( mia.canavarlarim.yuklenenAdet ? mia.canavarlarim.yuklenenAdet + '/10': '10' ),function(donenCevap){
+	ajaxGet(mia.global.apiHost + '/hesap/canavarlarim/' + ( mia.canavarlarim.yuklenenAdet ? mia.canavarlarim.yuklenenAdet + '/10': '10' ),function(donenCevap){
 		if(donenCevap){
-			cl("canavarlar api üzerinden yüklendi (URL "+'http://localhost:83/hesap/canavarlarim/' + ( mia.canavarlarim.yuklenenAdet ? mia.canavarlarim.yuklenenAdet + '/10': '10' )+")");
+			cl("canavarlar api üzerinden yüklendi (URL " + mia.global.apiHost + '/hesap/canavarlarim/' + ( mia.canavarlarim.yuklenenAdet ? mia.canavarlarim.yuklenenAdet + '/10': '10' )+")");
 
 			// text yığını olarak dönen json verisini parçala ve objeye dönüştür 
 			var donenCevapJson = JSON.parse(donenCevap);
@@ -37,6 +37,7 @@ mia.canavarlarim.yukle = function(){
 
 					// objeye dönüşmüş canavarlar verisini döngü ve parcaYukle fonksiyonu yardımı ile ekrana basar
 					for(i=0; i<canavarlarim.length; i++){
+						canavarlarim[i].monsterImageHost = mia.global.monsterImageHost;
 						mia.parcaYukle('canavarKart', '#canavarlarim-sahne .ust-panel', canavarlarim[i]);
 						mia.canavarlarim.yuklenenAdet++;
 					}

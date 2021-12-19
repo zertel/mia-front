@@ -3,7 +3,7 @@
 	onclick="
 		mia.pencere.ac('canavar-detay',{
 			parcaAdi:'canavarDetay',
-			parcaApiUrl: 'http://localhost:83/canavar/detay/{{canavar_id}}',
+			parcaApiUrl: '{{apiHost}}/canavar/detay/{{canavar_id}}',
 			width: '700px',
 			height: '500px'
 		},
@@ -19,7 +19,7 @@
 		-moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.3);
 		box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.3);
 
-		background-image: url('http://localhost:83/monster/{{canavar_id}}.png');
+		background-image: url('{{monsterImageHost}}/monster/{{canavar_id}}.png');
 		background-size: contain;
 		background-repeat: no-repeat;
 

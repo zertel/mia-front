@@ -7,7 +7,7 @@
 		</div>
 		
 		<div class="orta-panel">
-			<form action="http://localhost:83/hesap/kayit" id="hesap-olustur-form" method="POST"
+			<form action="{{apiHost}}/hesap/kayit" id="hesap-olustur-form" method="POST"
 				onsubmit="return mia.hesapOlustur.kaydet()">
 				<div>
 					<input type="text" name="kullaniciAdi" autocomplete="off" placeholder="Kullanıcı adınız" class="hesap-olustur-input">
